@@ -11,9 +11,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.rootbr.network.adapter.out.db.UserPortImpl;
 import com.rootbr.network.application.SocialNetworkApplication;
-import com.rootbr.network.application.usecase.RegisterUserUseCase;
-import com.rootbr.network.application.usecase.impl.RegisterUserUseCaseImpl;
-import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto.Builder;
 import com.sun.net.httpserver.Authenticator;
@@ -42,6 +39,7 @@ public class SimplApp {
   public static final long START_APP = System.nanoTime();
 
   public static void main(String[] args) throws IOException {
+
     final JsonFactory factory = new JsonFactory();
     final Auth auth = new Auth("yourStrongSecretKeyWithAtLeast32Characters", 60);
     final JwtAuthenticator authenticator = new JwtAuthenticator(auth);
@@ -104,7 +102,8 @@ public class SimplApp {
         }
       }
       final Builder builder = UserRegisterPost200ResponseRestDto.builder();
-      socialNetworkApplication.registerUser(ANONYMOUS, UUID.randomUUID().toString(), firstName, lastName, city,birthdate,biography, auth.cryptPassword(password), builder);
+      socialNetworkApplication.registerUser(ANONYMOUS, UUID.randomUUID().toString(), firstName,
+          lastName, city, birthdate, biography, auth.cryptPassword(password), builder);
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
       exchange.sendResponseHeaders(200, 0);
       try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {

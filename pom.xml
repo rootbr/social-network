@@ -95,6 +95,12 @@
             <version>${jjwt-api.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.12.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -122,28 +128,36 @@
                 <groupId>org.jooq</groupId>
                 <artifactId>jooq-codegen-maven</artifactId>
                 <version>3.18.4</version>
-
                 <dependencies>
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
                         <version>${postgresql.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.jooq</groupId>
+                        <artifactId>jooq-meta-extensions-liquibase</artifactId>
+                        <version>3.20.3</version>
+                    </dependency>
                 </dependencies>
-
                 <configuration>
-                    <jdbc>
-                        <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/db</url>
-                        <user>postgres</user>
-                        <password>postgres</password>
-                    </jdbc>
-
                     <generator>
                         <database>
-                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
-                            <incik77mkkkmkimludes>.*</incik77mkkkmkimludes>
-                            <inputSchema>public</inputSchema>
+                            <name>org.jooq.meta.extensions.liquibase.LiquibaseDatabase</name>
+                            <properties>
+                                <property>
+                                    <key>rootPath</key>
+                                    <value>${basedir}/src/main/resources/db/changelog</value>
+                                </property>
+                                <property>
+                                    <key>scripts</key>
+                                    <value>db.changelog-master.xml</value>
+                                </property>
+                                <property>
+                                    <key>database.liquibaseSchemaName</key>
+                                    <value>PUBLIC</value>
+                                </property>
+                            </properties>
                         </database>
                         <target>
                             <packageName>com.rootbr.network.adapter.out.db.jooq</packageName>
