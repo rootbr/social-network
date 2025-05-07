@@ -1,102 +1,100 @@
 package com.rootbr.network.domain.port.rest.model;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.springframework.lang.Nullable;
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import java.util.Objects;
 
 /**
  * Пост пользователя
  */
 
-@JsonTypeName("Post")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-04T22:50:29.295949+02:00[Europe/Berlin]", comments = "Generator version: 7.13.0")
+
+
 public class PostRestDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private @Nullable String id;
+  private String id;
 
-  private @Nullable String text;
+  private String text;
 
-  private @Nullable String authorUserId;
+  private String authorUserId;
 
-  public PostRestDto id(String id) {
+  /**
+   * Create a builder with no initialized field (except for the default values).
+   */
+  public static PostRestDto.Builder builder() {
+    return new PostRestDto.Builder();
+  }
+
+  public PostRestDto id(final String id) {
     this.id = id;
     return this;
   }
 
   /**
    * Идентификатор поста
+   *
    * @return id
    */
-  
-  @JsonProperty("id")
+
+
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 
-  public PostRestDto text(String text) {
+  public PostRestDto text(final String text) {
     this.text = text;
     return this;
   }
 
   /**
    * Текст поста
+   *
    * @return text
    */
-  
-  @JsonProperty("text")
+
+
   public String getText() {
     return text;
   }
 
-  public void setText(String text) {
+  public void setText(final String text) {
     this.text = text;
   }
 
-  public PostRestDto authorUserId(String authorUserId) {
+  public PostRestDto authorUserId(final String authorUserId) {
     this.authorUserId = authorUserId;
     return this;
   }
 
   /**
    * Идентификатор пользователя
+   *
    * @return authorUserId
    */
-  
-  @JsonProperty("author_user_id")
+
+
   public String getAuthorUserId() {
     return authorUserId;
   }
 
-  public void setAuthorUserId(String authorUserId) {
+  public void setAuthorUserId(final String authorUserId) {
     this.authorUserId = authorUserId;
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PostRestDto post = (PostRestDto) o;
+    final PostRestDto post = (PostRestDto) o;
     return Objects.equals(this.id, post.id) &&
         Objects.equals(this.text, post.text) &&
         Objects.equals(this.authorUserId, post.authorUserId);
@@ -109,26 +107,33 @@ public class PostRestDto implements Serializable {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class PostRestDto {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
-    sb.append("    authorUserId: ").append(toIndentedString(authorUserId)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    final String sb = "class PostRestDto {\n"
+        + "    id: " + toIndentedString(id) + "\n"
+        + "    text: " + toIndentedString(text) + "\n"
+        + "    authorUserId: " + toIndentedString(authorUserId) + "\n"
+        + "}";
+    return sb;
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
+
+  /**
+   * Create a builder with a shallow copy of this instance.
+   */
+  public PostRestDto.Builder toBuilder() {
+    final PostRestDto.Builder builder = new PostRestDto.Builder();
+    return builder.copyOf(this);
+  }
+
   public static class Builder {
 
     private PostRestDto instance;
@@ -137,37 +142,37 @@ public class PostRestDto implements Serializable {
       this(new PostRestDto());
     }
 
-    protected Builder(PostRestDto instance) {
+    protected Builder(final PostRestDto instance) {
       this.instance = instance;
     }
 
-    protected Builder copyOf(PostRestDto value) { 
+    protected Builder copyOf(final PostRestDto value) {
       this.instance.setId(value.id);
       this.instance.setText(value.text);
       this.instance.setAuthorUserId(value.authorUserId);
       return this;
     }
 
-    public PostRestDto.Builder id(String id) {
+    public PostRestDto.Builder id(final String id) {
       this.instance.id(id);
       return this;
     }
-    
-    public PostRestDto.Builder text(String text) {
+
+    public PostRestDto.Builder text(final String text) {
       this.instance.text(text);
       return this;
     }
-    
-    public PostRestDto.Builder authorUserId(String authorUserId) {
+
+    public PostRestDto.Builder authorUserId(final String authorUserId) {
       this.instance.authorUserId(authorUserId);
       return this;
     }
-    
+
     /**
-    * returns a built PostRestDto instance.
-    *
-    * The builder is not reusable (NullPointerException)
-    */
+     * returns a built PostRestDto instance.
+     * <p>
+     * The builder is not reusable (NullPointerException)
+     */
     public PostRestDto build() {
       try {
         return this.instance;
@@ -181,21 +186,6 @@ public class PostRestDto implements Serializable {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /**
-  * Create a builder with no initialized field (except for the default values).
-  */
-  public static PostRestDto.Builder builder() {
-    return new PostRestDto.Builder();
-  }
-
-  /**
-  * Create a builder with a shallow copy of this instance.
-  */
-  public PostRestDto.Builder toBuilder() {
-    PostRestDto.Builder builder = new PostRestDto.Builder();
-    return builder.copyOf(this);
   }
 
 }

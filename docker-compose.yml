@@ -8,7 +8,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rootbr_highload
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
 
@@ -19,7 +19,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=rootbr_highload
+      - POSTGRES_DB=db
     volumes:
       - postgres-data:/var/lib/postgresql/data
 

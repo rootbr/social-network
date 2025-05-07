@@ -1,26 +1,14 @@
 package com.rootbr.network.domain.port.rest.model;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.springframework.lang.Nullable;
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import java.util.Objects;
 
 /**
  * PostUpdatePutRequestRestDto
  */
 
-@JsonTypeName("_post_update_put_request")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-04T22:50:29.295949+02:00[Europe/Berlin]", comments = "Generator version: 7.13.0")
+
+
 public class PostUpdatePutRequestRestDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -36,58 +24,67 @@ public class PostUpdatePutRequestRestDto implements Serializable {
   /**
    * Constructor with only required parameters
    */
-  public PostUpdatePutRequestRestDto(String id, String text) {
+  public PostUpdatePutRequestRestDto(final String id, final String text) {
     this.id = id;
     this.text = text;
   }
 
-  public PostUpdatePutRequestRestDto id(String id) {
+  /**
+   * Create a builder with no initialized field (except for the default values).
+   */
+  public static PostUpdatePutRequestRestDto.Builder builder() {
+    return new PostUpdatePutRequestRestDto.Builder();
+  }
+
+  public PostUpdatePutRequestRestDto id(final String id) {
     this.id = id;
     return this;
   }
 
   /**
    * Идентификатор поста
+   *
    * @return id
    */
-  @NotNull 
-  @JsonProperty("id")
+
+
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 
-  public PostUpdatePutRequestRestDto text(String text) {
+  public PostUpdatePutRequestRestDto text(final String text) {
     this.text = text;
     return this;
   }
 
   /**
    * Текст поста
+   *
    * @return text
    */
-  @NotNull 
-  @JsonProperty("text")
+
+
   public String getText() {
     return text;
   }
 
-  public void setText(String text) {
+  public void setText(final String text) {
     this.text = text;
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    PostUpdatePutRequestRestDto postUpdatePutRequest = (PostUpdatePutRequestRestDto) o;
+    final PostUpdatePutRequestRestDto postUpdatePutRequest = (PostUpdatePutRequestRestDto) o;
     return Objects.equals(this.id, postUpdatePutRequest.id) &&
         Objects.equals(this.text, postUpdatePutRequest.text);
   }
@@ -99,25 +96,32 @@ public class PostUpdatePutRequestRestDto implements Serializable {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class PostUpdatePutRequestRestDto {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    final String sb = "class PostUpdatePutRequestRestDto {\n"
+        + "    id: " + toIndentedString(id) + "\n"
+        + "    text: " + toIndentedString(text) + "\n"
+        + "}";
+    return sb;
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
+
+  /**
+   * Create a builder with a shallow copy of this instance.
+   */
+  public PostUpdatePutRequestRestDto.Builder toBuilder() {
+    final PostUpdatePutRequestRestDto.Builder builder = new PostUpdatePutRequestRestDto.Builder();
+    return builder.copyOf(this);
+  }
+
   public static class Builder {
 
     private PostUpdatePutRequestRestDto instance;
@@ -126,31 +130,31 @@ public class PostUpdatePutRequestRestDto implements Serializable {
       this(new PostUpdatePutRequestRestDto());
     }
 
-    protected Builder(PostUpdatePutRequestRestDto instance) {
+    protected Builder(final PostUpdatePutRequestRestDto instance) {
       this.instance = instance;
     }
 
-    protected Builder copyOf(PostUpdatePutRequestRestDto value) { 
+    protected Builder copyOf(final PostUpdatePutRequestRestDto value) {
       this.instance.setId(value.id);
       this.instance.setText(value.text);
       return this;
     }
 
-    public PostUpdatePutRequestRestDto.Builder id(String id) {
+    public PostUpdatePutRequestRestDto.Builder id(final String id) {
       this.instance.id(id);
       return this;
     }
-    
-    public PostUpdatePutRequestRestDto.Builder text(String text) {
+
+    public PostUpdatePutRequestRestDto.Builder text(final String text) {
       this.instance.text(text);
       return this;
     }
-    
+
     /**
-    * returns a built PostUpdatePutRequestRestDto instance.
-    *
-    * The builder is not reusable (NullPointerException)
-    */
+     * returns a built PostUpdatePutRequestRestDto instance.
+     * <p>
+     * The builder is not reusable (NullPointerException)
+     */
     public PostUpdatePutRequestRestDto build() {
       try {
         return this.instance;
@@ -164,21 +168,6 @@ public class PostUpdatePutRequestRestDto implements Serializable {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /**
-  * Create a builder with no initialized field (except for the default values).
-  */
-  public static PostUpdatePutRequestRestDto.Builder builder() {
-    return new PostUpdatePutRequestRestDto.Builder();
-  }
-
-  /**
-  * Create a builder with a shallow copy of this instance.
-  */
-  public PostUpdatePutRequestRestDto.Builder toBuilder() {
-    PostUpdatePutRequestRestDto.Builder builder = new PostUpdatePutRequestRestDto.Builder();
-    return builder.copyOf(this);
   }
 
 }

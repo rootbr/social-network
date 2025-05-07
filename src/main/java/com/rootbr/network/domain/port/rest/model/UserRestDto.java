@@ -1,168 +1,166 @@
 package com.rootbr.network.domain.port.rest.model;
 
-import java.net.URI;
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.LocalDate;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 import java.io.Serializable;
-import java.time.OffsetDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
-
-import java.util.*;
-import javax.annotation.Generated;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * UserRestDto
  */
 
-@JsonTypeName("User")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-05-04T22:50:29.295949+02:00[Europe/Berlin]", comments = "Generator version: 7.13.0")
 public class UserRestDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private @Nullable String id;
+  private String id;
 
-  private @Nullable String firstName;
+  private String firstName;
 
-  private @Nullable String secondName;
+  private String secondName;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-  private @Nullable LocalDate birthdate;
 
-  private @Nullable String biography;
+  private LocalDate birthdate;
 
-  private @Nullable String city;
+  private String biography;
 
-  public UserRestDto id(String id) {
+  private String city;
+
+  /**
+   * Create a builder with no initialized field (except for the default values).
+   */
+  public static UserRestDto.Builder builder() {
+    return new UserRestDto.Builder();
+  }
+
+  public UserRestDto id(final String id) {
     this.id = id;
     return this;
   }
 
   /**
    * Идентификатор пользователя
+   *
    * @return id
    */
-  
-  @JsonProperty("id")
+
+
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(final String id) {
     this.id = id;
   }
 
-  public UserRestDto firstName(String firstName) {
+  public UserRestDto firstName(final String firstName) {
     this.firstName = firstName;
     return this;
   }
 
   /**
    * Имя
+   *
    * @return firstName
    */
-  
-  @JsonProperty("first_name")
+
+
   public String getFirstName() {
     return firstName;
   }
 
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
-  public UserRestDto secondName(String secondName) {
+  public UserRestDto secondName(final String secondName) {
     this.secondName = secondName;
     return this;
   }
 
   /**
    * Фамилия
+   *
    * @return secondName
    */
-  
-  @JsonProperty("second_name")
+
+
   public String getSecondName() {
     return secondName;
   }
 
-  public void setSecondName(String secondName) {
+  public void setSecondName(final String secondName) {
     this.secondName = secondName;
   }
 
-  public UserRestDto birthdate(LocalDate birthdate) {
+  public UserRestDto birthdate(final LocalDate birthdate) {
     this.birthdate = birthdate;
     return this;
   }
 
   /**
    * Дата рождения
+   *
    * @return birthdate
    */
-  @Valid 
-  @JsonProperty("birthdate")
+
+
   public LocalDate getBirthdate() {
     return birthdate;
   }
 
-  public void setBirthdate(LocalDate birthdate) {
+  public void setBirthdate(final LocalDate birthdate) {
     this.birthdate = birthdate;
   }
 
-  public UserRestDto biography(String biography) {
+  public UserRestDto biography(final String biography) {
     this.biography = biography;
     return this;
   }
 
   /**
    * Интересы
+   *
    * @return biography
    */
-  
-  @JsonProperty("biography")
+
+
   public String getBiography() {
     return biography;
   }
 
-  public void setBiography(String biography) {
+  public void setBiography(final String biography) {
     this.biography = biography;
   }
 
-  public UserRestDto city(String city) {
+  public UserRestDto city(final String city) {
     this.city = city;
     return this;
   }
 
   /**
    * Город
+   *
    * @return city
    */
-  
-  @JsonProperty("city")
+
+
   public String getCity() {
     return city;
   }
 
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserRestDto user = (UserRestDto) o;
+    final UserRestDto user = (UserRestDto) o;
     return Objects.equals(this.id, user.id) &&
         Objects.equals(this.firstName, user.firstName) &&
         Objects.equals(this.secondName, user.secondName) &&
@@ -178,29 +176,36 @@ public class UserRestDto implements Serializable {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class UserRestDto {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    secondName: ").append(toIndentedString(secondName)).append("\n");
-    sb.append("    birthdate: ").append(toIndentedString(birthdate)).append("\n");
-    sb.append("    biography: ").append(toIndentedString(biography)).append("\n");
-    sb.append("    city: ").append(toIndentedString(city)).append("\n");
-    sb.append("}");
-    return sb.toString();
+    final String sb = "class UserRestDto {\n"
+        + "    id: " + toIndentedString(id) + "\n"
+        + "    firstName: " + toIndentedString(firstName) + "\n"
+        + "    secondName: " + toIndentedString(secondName) + "\n"
+        + "    birthdate: " + toIndentedString(birthdate) + "\n"
+        + "    biography: " + toIndentedString(biography) + "\n"
+        + "    city: " + toIndentedString(city) + "\n"
+        + "}";
+    return sb;
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first
+   * line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(final Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-  
+
+  /**
+   * Create a builder with a shallow copy of this instance.
+   */
+  public UserRestDto.Builder toBuilder() {
+    final UserRestDto.Builder builder = new UserRestDto.Builder();
+    return builder.copyOf(this);
+  }
+
   public static class Builder {
 
     private UserRestDto instance;
@@ -209,11 +214,11 @@ public class UserRestDto implements Serializable {
       this(new UserRestDto());
     }
 
-    protected Builder(UserRestDto instance) {
+    protected Builder(final UserRestDto instance) {
       this.instance = instance;
     }
 
-    protected Builder copyOf(UserRestDto value) { 
+    protected Builder copyOf(final UserRestDto value) {
       this.instance.setId(value.id);
       this.instance.setFirstName(value.firstName);
       this.instance.setSecondName(value.secondName);
@@ -223,41 +228,41 @@ public class UserRestDto implements Serializable {
       return this;
     }
 
-    public UserRestDto.Builder id(String id) {
+    public UserRestDto.Builder id(final String id) {
       this.instance.id(id);
       return this;
     }
-    
-    public UserRestDto.Builder firstName(String firstName) {
+
+    public UserRestDto.Builder firstName(final String firstName) {
       this.instance.firstName(firstName);
       return this;
     }
-    
-    public UserRestDto.Builder secondName(String secondName) {
+
+    public UserRestDto.Builder secondName(final String secondName) {
       this.instance.secondName(secondName);
       return this;
     }
-    
-    public UserRestDto.Builder birthdate(LocalDate birthdate) {
+
+    public UserRestDto.Builder birthdate(final LocalDate birthdate) {
       this.instance.birthdate(birthdate);
       return this;
     }
-    
-    public UserRestDto.Builder biography(String biography) {
+
+    public UserRestDto.Builder biography(final String biography) {
       this.instance.biography(biography);
       return this;
     }
-    
-    public UserRestDto.Builder city(String city) {
+
+    public UserRestDto.Builder city(final String city) {
       this.instance.city(city);
       return this;
     }
-    
+
     /**
-    * returns a built UserRestDto instance.
-    *
-    * The builder is not reusable (NullPointerException)
-    */
+     * returns a built UserRestDto instance.
+     * <p>
+     * The builder is not reusable (NullPointerException)
+     */
     public UserRestDto build() {
       try {
         return this.instance;
@@ -271,21 +276,6 @@ public class UserRestDto implements Serializable {
     public String toString() {
       return getClass() + "=(" + instance + ")";
     }
-  }
-
-  /**
-  * Create a builder with no initialized field (except for the default values).
-  */
-  public static UserRestDto.Builder builder() {
-    return new UserRestDto.Builder();
-  }
-
-  /**
-  * Create a builder with a shallow copy of this instance.
-  */
-  public UserRestDto.Builder toBuilder() {
-    UserRestDto.Builder builder = new UserRestDto.Builder();
-    return builder.copyOf(this);
   }
 
 }

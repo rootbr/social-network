@@ -9,15 +9,18 @@ import com.rootbr.network.domain.port.db.UserPort;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 import org.jooq.DSLContext;
 import org.jooq.Result;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
 
 public class UserPortImpl implements UserPort {
 
   private final DSLContext dsl;
 
-  public UserPortImpl(DSLContext dsl) {
-    this.dsl = dsl;
+  public UserPortImpl(DataSource dataSource) {
+    this.dsl = DSL.using(dataSource, SQLDialect.POSTGRES);
   }
 
   @Override

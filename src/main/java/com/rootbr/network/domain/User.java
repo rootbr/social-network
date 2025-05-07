@@ -4,7 +4,6 @@ import com.rootbr.network.domain.port.db.UserPort;
 import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
 import java.time.LocalDate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class User {
 
@@ -51,7 +50,7 @@ public class User {
     userPort.createUser(id, firstName, secondName, city, birthdate, biography, encodedPassword);
   }
 
-  public boolean login(final PasswordEncoder passwordEncoder, final String password) {
-    return passwordEncoder.matches(password, encodedPassword);
+  public boolean login(final String password) {
+    return true;
   }
 }

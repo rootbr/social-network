@@ -16,8 +16,8 @@ import com.rootbr.network.domain.port.rest.model.LoginPostRequestRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto.Builder;
 import com.rootbr.network.domain.port.rest.model.UserRegisterPostRequestRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
+import java.time.LocalDate;
 import java.util.List;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class SocialNetworkApplication implements
     RegisterUserUseCase, GetUserByIdUseCase, SearchUsersByNameUseCase, LoginUseCase {
@@ -30,13 +30,13 @@ public class SocialNetworkApplication implements
   private final SearchUsersByNameUseCase searchUsersByNameUseCase;
   private final LoginUseCase loginUseCase;
 
-  public SocialNetworkApplication(final UserPort userPort, final PasswordEncoder passwordEncoder) {
+  public SocialNetworkApplication(final UserPort userPort) {
     this.allUsers = new AllUsers(userPort);
     final Invoker invoker = new Invoker();
-    this.registerUserUseCase = new RegisterUserUseCaseImpl(allUsers, passwordEncoder, invoker);
+    this.registerUserUseCase = new RegisterUserUseCaseImpl(allUsers, invoker);
     this.getUserByIdUseCase = new GetUserByIdUseCaseImpl(allUsers, invoker);
     this.searchUsersByNameUseCase = new SearchUsersByNameUseCaseImpl(allUsers, invoker);
-    this.loginUseCase = new LoginUseCaseImpl(allUsers, passwordEncoder, invoker);
+    this.loginUseCase = new LoginUseCaseImpl(allUsers, invoker);
   }
 
 
@@ -46,8 +46,18 @@ public class SocialNetworkApplication implements
   }
 
   @Override
-  public void registerUser(final CommandAuthor commandAuthor, final UserRegisterPostRequestRestDto request, final Builder response) {
-    registerUserUseCase.registerUser(commandAuthor, request, response);
+  public void registerUser(
+      final CommandAuthor commandAuthor,
+      final String id,
+      final String firstName,
+      final String lastName,
+      final String city,
+      final LocalDate birthdate,
+      final String biography,
+      final String encodedPassword,
+      final Builder response
+  ) {
+    registerUserUseCase.registerUser(commandAuthor, id, firstName, lastName, city, birthdate, biography, encodedPassword, response);
   }
 
   @Override

@@ -7,16 +7,13 @@ import com.rootbr.network.domain.AllUsers;
 import com.rootbr.network.domain.engine.Command;
 import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.rest.model.LoginPostRequestRestDto;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class LoginUseCaseImpl implements LoginUseCase {
   private final AllUsers allUsers;
-  private final PasswordEncoder passwordEncoder;
   private final Invoker invoker;
 
-  public LoginUseCaseImpl(final AllUsers allUsers, final PasswordEncoder passwordEncoder, final Invoker invoker) {
+  public LoginUseCaseImpl(final AllUsers allUsers, final Invoker invoker) {
     this.allUsers = allUsers;
-    this.passwordEncoder = passwordEncoder;
     this.invoker = invoker;
   }
 
@@ -37,7 +34,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
 
     @Override
     protected void doExecute() {
-      result = allUsers.getById(request.getId()).login(passwordEncoder, request.getPassword());
+      result = allUsers.getById(request.getId()).login(request.getPassword());
     }
   }
 }
