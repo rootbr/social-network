@@ -1,8 +1,9 @@
 package com.rootbr.network.domain;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.domain.port.db.UserPort;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class User {
@@ -33,8 +34,8 @@ public class User {
     this.encodedPassword = encodedPassword;
   }
 
-  public void write(final UserRegisterPost200ResponseRestDto.Builder response) {
-    response.userId(id);
+  public void write(final JsonGenerator response) throws IOException {
+    response.writeStringField("userId", id);
   }
 
   public void write(final UserRestDto.Builder response) {

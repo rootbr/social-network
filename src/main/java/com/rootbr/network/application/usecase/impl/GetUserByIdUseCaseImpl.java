@@ -20,13 +20,12 @@ public class GetUserByIdUseCaseImpl implements GetUserByIdUseCase {
   @Override
   public void getUserById(final CommandAuthor commandAuthor, final String id, final UserRestDto.Builder response) {
     invoker.invoke(
-        new Command() {
+        commandAuthor, new Command() {
           @Override
           protected void doExecute() {
             allUsers.getById(id).write(response);
           }
-        },
-        commandAuthor
+        }
     );
   }
 }

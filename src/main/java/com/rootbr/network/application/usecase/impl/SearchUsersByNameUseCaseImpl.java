@@ -21,13 +21,12 @@ public class SearchUsersByNameUseCaseImpl implements SearchUsersByNameUseCase {
   @Override
   public void searchUsers(final CommandAuthor commandAuthor, String firstName, String lastName, List<UserRestDto> response) {
     invoker.invoke(
-        new Command() {
+        commandAuthor, new Command() {
           @Override
           protected void doExecute() {
             allUsers.search(firstName, lastName).write(response);
           }
-        },
-        commandAuthor
+        }
     );
   }
 }

@@ -68,7 +68,7 @@ public class SimplApp {
         return;
       }
 
-      String firstName = null, lastName = null, biography = null, city = null, password = null;
+      String firstName = null, lastName = null, biography = null, city = null, encreptedPassword = null;
       LocalDate birthdate = null;
       try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {
         JsonToken jsonToken;
@@ -93,7 +93,7 @@ public class SimplApp {
                 city = parser.getValueAsString();
                 break;
               case "password":
-                password = parser.getValueAsString();
+                encreptedPassword = auth.cryptPassword(parser.getValueAsString());
                 break;
               default:
                 throw new IllegalArgumentException("Unknown field name: " + fieldName);
@@ -101,14 +101,12 @@ public class SimplApp {
           }
         }
       }
-      final Builder builder = UserRegisterPost200ResponseRestDto.builder();
-      socialNetworkApplication.registerUser(ANONYMOUS, UUID.randomUUID().toString(), firstName,
-          lastName, city, birthdate, biography, auth.cryptPassword(password), builder);
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
       exchange.sendResponseHeaders(200, 0);
       try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
         generator.writeStartObject();
-        generator.writeStringField("userId", builder.build().getUserId());
+        socialNetworkApplication.registerUser(ANONYMOUS, UUID.randomUUID().toString(), firstName,
+            lastName, city, birthdate, biography, encreptedPassword, generator);
         generator.writeEndObject();
       }
     });
@@ -149,10 +147,6 @@ public class SimplApp {
         generator.writeStringField("token", auth.generateToken(id));
         generator.writeEndObject();
       }
-    });
-
-    server.createContext("/user", exchange -> {
-
     });
 
     server.createContext("/user/", exchange -> {

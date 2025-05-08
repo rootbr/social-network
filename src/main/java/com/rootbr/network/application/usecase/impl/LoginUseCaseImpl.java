@@ -20,7 +20,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
   @Override
   public boolean login(final LoginPostRequestRestDto request) {
     final LoginCommand command = new LoginCommand(request);
-    invoker.invoke(command, ANONYMOUS);
+    invoker.invoke(ANONYMOUS, command);
     return command.result;
   }
 

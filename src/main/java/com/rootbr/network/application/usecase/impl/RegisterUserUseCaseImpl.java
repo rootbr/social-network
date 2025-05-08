@@ -1,12 +1,12 @@
 package com.rootbr.network.application.usecase.impl;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.application.usecase.RegisterUserUseCase;
 import com.rootbr.network.domain.AllUsers;
 import com.rootbr.network.domain.engine.Command;
 import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.engine.Invoker;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto.Builder;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
@@ -29,9 +29,11 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
       final LocalDate birthdate,
       final String biography,
       final String encodedPassword,
-      final Builder response
-  ) {
-    invoker.invoke(new RegisterUserCommand(
+      final JsonGenerator response
+  ) throws IOException {
+    invoker.invoke(
+        commandAuthor,
+        new RegisterUserCommand(
             id,
             firstName,
             lastName,
@@ -40,8 +42,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
             biography,
             encodedPassword,
             response
-        ),
-        commandAuthor
+        )
     );
   }
 
@@ -54,7 +55,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
     private final LocalDate birthdate;
     private final String biography;
     private final String encodedPassword;
-    private final UserRegisterPost200ResponseRestDto.Builder response;
+    private final JsonGenerator response;
 
     public RegisterUserCommand(
         final String id,
@@ -64,7 +65,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
         final LocalDate birthdate,
         final String biography,
         final String encodedPassword,
-        final UserRegisterPost200ResponseRestDto.Builder response
+        final JsonGenerator response
     ) {
       this.id = id;
       this.firstName = firstName;
@@ -77,7 +78,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
     }
 
     @Override
-    public void doExecute() {
+    public void doExecute() throws IOException {
       allUsers.registerNewUser(id, firstName, lastName, city, birthdate, biography, encodedPassword)
           .write(response);
     }

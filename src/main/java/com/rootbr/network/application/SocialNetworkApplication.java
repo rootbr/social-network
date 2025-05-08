@@ -1,5 +1,6 @@
 package com.rootbr.network.application;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.application.usecase.GetUserByIdUseCase;
 import com.rootbr.network.application.usecase.LoginUseCase;
 import com.rootbr.network.application.usecase.RegisterUserUseCase;
@@ -13,9 +14,8 @@ import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.db.UserPort;
 import com.rootbr.network.domain.port.rest.model.LoginPostRequestRestDto;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto.Builder;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPostRequestRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -55,8 +55,8 @@ public class SocialNetworkApplication implements
       final LocalDate birthdate,
       final String biography,
       final String encodedPassword,
-      final Builder response
-  ) {
+      final JsonGenerator response
+  ) throws IOException {
     registerUserUseCase.registerUser(commandAuthor, id, firstName, lastName, city, birthdate, biography, encodedPassword, response);
   }
 

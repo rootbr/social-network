@@ -19,42 +19,31 @@ public class UserPortImpl implements UserPort {
 
   private final DSLContext dsl;
 
-  public UserPortImpl(DataSource dataSource) {
+  public UserPortImpl(final DataSource dataSource) {
     this.dsl = DSL.using(dataSource, SQLDialect.POSTGRES);
   }
 
   @Override
   public User getUserById(final String id) {
-    UsersRecord record = dsl.selectFrom(USERS)
+    final UsersRecord record = dsl.selectFrom(USERS)
         .where(USERS.ID.eq(id))
         .fetchOne();
-
-    if (record == null) {
-      return null;
-    }
-
-    return new User(
-        record.getId(),
-        record.getFirstName(),
-        record.getLastName(),
-        record.getCity(),
-        record.getBirthDate(),
-        record.getBiography(),
-        record.getEncodedPassword()
-    );
+    return record == null ? null : new User(record.getId(), record.getFirstName(),
+        record.getLastName(), record.getCity(), record.getBirthDate(), record.getBiography(),
+        record.getEncodedPassword());
   }
 
   @Override
   public Users searchUsers(final String firstName, final String lastName) {
-    Result<UsersRecord> records = dsl.selectFrom(USERS)
+    final Result<UsersRecord> records = dsl.selectFrom(USERS)
         .where(
             USERS.FIRST_NAME.containsIgnoreCase(firstName)
                 .and(USERS.LAST_NAME.containsIgnoreCase(lastName))
         )
         .fetch();
 
-    List<User> userList = new ArrayList<>();
-    for (UsersRecord record : records) {
+    final List<User> userList = new ArrayList<>();
+    for (final UsersRecord record : records) {
       userList.add(new User(
           record.getId(),
           record.getFirstName(),
