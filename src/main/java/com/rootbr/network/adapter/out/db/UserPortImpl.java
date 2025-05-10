@@ -29,8 +29,7 @@ public class UserPortImpl implements UserPort {
         .where(USERS.ID.eq(id))
         .fetchOne();
     return record == null ? null : new User(record.getId(), record.getFirstName(),
-        record.getLastName(), record.getCity(), record.getBirthDate(), record.getBiography(),
-        record.getEncodedPassword());
+        record.getLastName(), record.getCity(), record.getBirthDate(), record.getBiography());
   }
 
   @Override
@@ -50,8 +49,7 @@ public class UserPortImpl implements UserPort {
           record.getLastName(),
           record.getCity(),
           record.getBirthDate(),
-          record.getBiography(),
-          record.getEncodedPassword()
+          record.getBiography()
       ));
     }
 
@@ -60,8 +58,7 @@ public class UserPortImpl implements UserPort {
 
   @Override
   public void createUser(final String id, final String firstName, final String secondName,
-      final String city, final LocalDate birthdate, final String biography,
-      final String encodedPassword) {
+      final String city, final LocalDate birthdate, final String biography) {
     dsl.insertInto(USERS)
         .set(USERS.ID, id)
         .set(USERS.FIRST_NAME, firstName)
@@ -69,7 +66,6 @@ public class UserPortImpl implements UserPort {
         .set(USERS.CITY, city)
         .set(USERS.BIRTH_DATE, birthdate)
         .set(USERS.BIOGRAPHY, biography)
-        .set(USERS.ENCODED_PASSWORD, encodedPassword)
         .execute();
   }
 }

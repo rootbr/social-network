@@ -13,14 +13,13 @@ import com.rootbr.network.domain.AllUsers;
 import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.db.UserPort;
-import com.rootbr.network.domain.port.rest.model.LoginPostRequestRestDto;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
-public class SocialNetworkApplication implements
-    RegisterUserUseCase, GetUserByIdUseCase, SearchUsersByNameUseCase, LoginUseCase {
+public class SocialNetworkApplication {
 
   public static final CommandAuthor ANONYMOUS = new CommandAuthor("anonymous");
 
@@ -28,7 +27,6 @@ public class SocialNetworkApplication implements
   private final RegisterUserUseCase registerUserUseCase;
   private final GetUserByIdUseCase getUserByIdUseCase;
   private final SearchUsersByNameUseCase searchUsersByNameUseCase;
-  private final LoginUseCase loginUseCase;
 
   public SocialNetworkApplication(final UserPort userPort) {
     this.allUsers = new AllUsers(userPort);
@@ -36,16 +34,13 @@ public class SocialNetworkApplication implements
     this.registerUserUseCase = new RegisterUserUseCaseImpl(allUsers, invoker);
     this.getUserByIdUseCase = new GetUserByIdUseCaseImpl(allUsers, invoker);
     this.searchUsersByNameUseCase = new SearchUsersByNameUseCaseImpl(allUsers, invoker);
-    this.loginUseCase = new LoginUseCaseImpl(allUsers, invoker);
   }
 
-
-  @Override
-  public void getUserById(final CommandAuthor commandAuthor, final String id, final UserRestDto.Builder response) {
+  public void getUserById(final CommandAuthor commandAuthor, final String id, final UserRestDto.Builder response)
+      throws IOException {
     getUserByIdUseCase.getUserById(commandAuthor, id, response);
   }
 
-  @Override
   public void registerUser(
       final CommandAuthor commandAuthor,
       final String id,
@@ -60,13 +55,15 @@ public class SocialNetworkApplication implements
     registerUserUseCase.registerUser(commandAuthor, id, firstName, lastName, city, birthdate, biography, encodedPassword, response);
   }
 
-  @Override
   public void searchUsers(final CommandAuthor commandAuthor, final String firstName, final String lastName, final List<UserRestDto> response) {
     searchUsersByNameUseCase.searchUsers(commandAuthor, firstName, lastName, response);
   }
 
-  @Override
-  public boolean login(final LoginPostRequestRestDto request) {
-    return loginUseCase.login(request);
+  public boolean login(final String jwt) {
+    return loginUseCase.login(jwt);
+  }
+
+  public Principal login(final String userId, final String password) {
+    return null;
   }
 }

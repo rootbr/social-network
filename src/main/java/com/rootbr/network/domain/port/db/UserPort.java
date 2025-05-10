@@ -16,7 +16,6 @@ public interface UserPort {
       final String secondName,
       final String city,
       final LocalDate birthdate,
-      final String biography,
-      final String encodedPassword
+      final String biography
   );
 }

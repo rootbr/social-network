@@ -14,7 +14,6 @@ public class User {
   private String city;
   private LocalDate birthdate;
   private String biography;
-  private String encodedPassword;
 
   public User(
       final String id,
@@ -22,8 +21,7 @@ public class User {
       final String secondName,
       final String city,
       final LocalDate birthdate,
-      final String biography,
-      final String encodedPassword
+      final String biography
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -31,7 +29,6 @@ public class User {
     this.city = city;
     this.birthdate = birthdate;
     this.biography = biography;
-    this.encodedPassword = encodedPassword;
   }
 
   public void write(final JsonGenerator response) throws IOException {
@@ -48,10 +45,6 @@ public class User {
   }
 
   public void write(final UserPort userPort) {
-    userPort.createUser(id, firstName, secondName, city, birthdate, biography, encodedPassword);
-  }
-
-  public boolean login(final String password) {
-    return true;
+    userPort.createUser(id, firstName, secondName, city, birthdate, biography);
   }
 }

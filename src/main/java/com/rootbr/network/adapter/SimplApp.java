@@ -1,18 +1,14 @@
 package com.rootbr.network.adapter;
 
-import static com.rootbr.network.application.SocialNetworkApplication.ANONYMOUS;
-
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import at.favre.lib.crypto.bcrypt.BCrypt.Hasher;
-import at.favre.lib.crypto.bcrypt.BCrypt.Verifyer;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.rootbr.network.adapter.out.db.UserPortImpl;
+import com.rootbr.network.application.AuthenticationService;
+import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto;
-import com.rootbr.network.domain.port.rest.model.UserRegisterPost200ResponseRestDto.Builder;
+import com.rootbr.network.domain.engine.UserVisitor;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -20,16 +16,12 @@ import com.sun.net.httpserver.HttpPrincipal;
 import com.sun.net.httpserver.HttpServer;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.Executors;
-import javax.crypto.SecretKey;
 import javax.sql.DataSource;
 
 public class SimplApp {
@@ -41,8 +33,8 @@ public class SimplApp {
   public static void main(String[] args) throws IOException {
 
     final JsonFactory factory = new JsonFactory();
-    final Auth auth = new Auth("yourStrongSecretKeyWithAtLeast32Characters", 60);
-    final JwtAuthenticator authenticator = new JwtAuthenticator(auth);
+    final AuthenticationService authenticationService = new BCryptJwtAuthenticationService("yourStrongSecretKeyWithAtLeast32Characters", 60);
+
     final HikariConfig config = new HikariConfig();
     config.setJdbcUrl("jdbc:postgresql://localhost:5432/db");
     config.setUsername("postgres");
@@ -54,10 +46,12 @@ public class SimplApp {
     config.addDataSourceProperty("cachePrepStmts", "true");
     config.addDataSourceProperty("prepStmtCacheSize", "250");
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-    final DataSource dataSource = new HikariDataSource(config);
     final SocialNetworkApplication socialNetworkApplication = new SocialNetworkApplication(
-        new UserPortImpl(dataSource)
+        new UserPortImpl(
+            new HikariDataSource(config)
+        )
     );
+    final JwtAuthenticator authenticator = new JwtAuthenticator(socialNetworkApplication);
     final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
     server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
 
@@ -68,7 +62,7 @@ public class SimplApp {
         return;
       }
 
-      String firstName = null, lastName = null, biography = null, city = null, encreptedPassword = null;
+      String firstName = null, lastName = null, biography = null, city = null, password = null;
       LocalDate birthdate = null;
       try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {
         JsonToken jsonToken;
@@ -93,7 +87,7 @@ public class SimplApp {
                 city = parser.getValueAsString();
                 break;
               case "password":
-                encreptedPassword = auth.cryptPassword(parser.getValueAsString());
+                password = parser.getValueAsString();
                 break;
               default:
                 throw new IllegalArgumentException("Unknown field name: " + fieldName);
@@ -101,12 +95,16 @@ public class SimplApp {
           }
         }
       }
+
+      final String userId = UUID.randomUUID().toString();
+      java.security.Principal principal = socialNetworkApplication.createPrincipal(userId, password);
+      principal.registerUser(userId, firstName, lastName, city, birthdate, biography);
+
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
       exchange.sendResponseHeaders(200, 0);
       try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
         generator.writeStartObject();
-        socialNetworkApplication.registerUser(ANONYMOUS, UUID.randomUUID().toString(), firstName,
-            lastName, city, birthdate, biography, encreptedPassword, generator);
+        generator.writeStringField("userId", userId);
         generator.writeEndObject();
       }
     });
@@ -134,8 +132,11 @@ public class SimplApp {
         exchange.sendResponseHeaders(400, -1);
         return;
       }
-      final String validatePassword = "<string>";
-      if (!auth.validatePassword(password, validatePassword)) {
+
+      final String userId = UUID.randomUUID().toString();
+      java.security.Principal principal = socialNetworkApplication.login(userId, password);
+
+      if (principal == null) {
         exchange.sendResponseHeaders(401, -1);
         return;
       }
@@ -144,17 +145,23 @@ public class SimplApp {
       exchange.sendResponseHeaders(200, 0);
       try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
         generator.writeStartObject();
-        generator.writeStringField("token", auth.generateToken(id));
+        generator.writeStringField("token", principal.generateToken());
         generator.writeEndObject();
       }
     });
 
     server.createContext("/user/", exchange -> {
+      final Principal principal = ((Principal) exchange.getPrincipal());
+      final String userId = exchange.getRequestURI().getPath().substring(7);
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
       exchange.sendResponseHeaders(200, 0);
       try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
         generator.writeStartObject();
-        generator.writeStringField("userId", exchange.getPrincipal().getName());
+        principal.readUser(userId, new UserVisitor() {
+          void visitUser(String id) throws IOException {
+            generator.writeStringField("userId", id);
+          }
+        });
         generator.writeEndObject();
       }
     }).setAuthenticator(authenticator);
@@ -165,56 +172,15 @@ public class SimplApp {
   }
 
 
-  private static class Auth {
-
-    private final long tokenValidityInSeconds;
-    private final SecretKey key;
-    private final Hasher hasher = BCrypt.withDefaults();
-    private final Verifyer verifyer = BCrypt.verifyer();
-
-    Auth(final String secretKey, final long tokenValidityInSeconds) {
-      this.tokenValidityInSeconds = tokenValidityInSeconds;
-      this.key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public String generateToken(final String id) {
-      final Date now = new Date();
-      final Date validity = new Date(now.getTime() + tokenValidityInSeconds * 1000);
-      return Jwts.builder()
-          .subject(id)
-          .issuedAt(now)
-          .expiration(validity)
-          .signWith(key)
-          .compact();
-    }
-
-    public String cryptPassword(final String password) {
-      return hasher.hashToString(12, password.toCharArray());
-    }
-
-    public boolean validatePassword(final String password, final String hashedPassword) {
-      return verifyer.verify(password.toCharArray(), hashedPassword).verified;
-    }
-
-    public String parseUserId(final String jwt) {
-      try {
-        return Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload()
-            .getSubject();
-      } catch (final Exception e) {
-        return null;
-      }
-    }
-  }
-
   private static class JwtAuthenticator extends Authenticator {
 
     public static final Retry RETRY = new Retry(401);
     public static final Failure FAILURE = new Failure(401);
 
-    private final Auth auth;
+    private final SocialNetworkApplication socialNetworkApplication;
 
-    private JwtAuthenticator(final Auth auth) {
-      this.auth = auth;
+    private JwtAuthenticator(final SocialNetworkApplication socialNetworkApplication) {
+      this.socialNetworkApplication = socialNetworkApplication;
     }
 
     public Result authenticate(final HttpExchange exchange) {
@@ -227,11 +193,11 @@ public class SimplApp {
       if (sp == -1 || !authHeader.substring(0, sp).equals("Bearer")) {
         return FAILURE;
       }
-      final String uname = auth.parseUserId(authHeader.substring(sp + 1));
-      if (uname == null) {
+      final java.security.Principal principal = socialNetworkApplication.login(authHeader.substring(sp + 1));
+      if (principal == null) {
         return FAILURE;
       }
-      return new Authenticator.Success(new HttpPrincipal(uname, ""));
+      return new Authenticator.Success(new HttpPrincipal(principal.getName(), ""));
     }
   }
 }
