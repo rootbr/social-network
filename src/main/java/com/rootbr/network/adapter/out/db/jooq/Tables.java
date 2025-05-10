@@ -10,11 +10,11 @@ import com.rootbr.network.adapter.out.db.jooq.tables.Users;
 /**
  * Convenience access to all tables in the default schema.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes", "this-escape"})
 public class Tables {
 
-    /**
-     * The table <code>USERS</code>.
-     */
-    public static final Users USERS = Users.USERS;
+  /**
+   * The table <code>USERS</code>.
+   */
+  public static final Users USERS = Users.USERS;
 }

@@ -7,8 +7,10 @@ import com.rootbr.network.domain.AllUsers;
 import com.rootbr.network.domain.engine.Command;
 import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.rest.model.LoginPostRequestRestDto;
+import java.io.IOException;
 
 public class LoginUseCaseImpl implements LoginUseCase {
+
   private final AllUsers allUsers;
   private final Invoker invoker;
 
@@ -18,13 +20,14 @@ public class LoginUseCaseImpl implements LoginUseCase {
   }
 
   @Override
-  public boolean login(final String jwt) {
-    final LoginCommand command = new LoginCommand(jwt);
+  public boolean login(final String jwt) throws IOException {
+    final LoginCommand command = new LoginCommand(null);
     invoker.invoke(ANONYMOUS, command);
     return command.result;
   }
 
   private class LoginCommand extends Command {
+
     private final LoginPostRequestRestDto request;
     private boolean result = false;
 
@@ -34,7 +37,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
 
     @Override
     protected void doExecute() {
-      result = allUsers.getById(request.getId()).login(request.getPassword());
+//      result = allUsers.getById(request.getId()).login(request.getPassword());
     }
   }
 }

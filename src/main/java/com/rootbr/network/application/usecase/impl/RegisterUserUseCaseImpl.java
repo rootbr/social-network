@@ -79,7 +79,7 @@ public class RegisterUserUseCaseImpl implements RegisterUserUseCase {
 
     @Override
     public void doExecute() throws IOException {
-      allUsers.registerNewUser(id, firstName, lastName, city, birthdate, biography, encodedPassword)
+      allUsers.registerNewUser(id, firstName, lastName, city, birthdate, biography)
           .write(response);
     }
   }

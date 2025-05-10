@@ -6,6 +6,7 @@ import java.io.IOException;
 
 public interface GetUserByIdUseCase {
 
-  public void getUserById(final CommandAuthor commandAuthor, final String id, final UserRestDto.Builder response)
+  public void getUserById(final CommandAuthor commandAuthor, final String id,
+      final UserRestDto.Builder response)
       throws IOException;
 }

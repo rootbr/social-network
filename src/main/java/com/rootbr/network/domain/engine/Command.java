@@ -12,7 +12,7 @@ public abstract class Command {
     this.commandAuthor = commandAuthor;
   }
 
-  public final void execute() {
+  public final void execute() throws IOException {
     timestamp = Instant.now();
     doExecute();
   }

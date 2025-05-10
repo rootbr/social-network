@@ -2,11 +2,9 @@ package com.rootbr.network.application;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.application.usecase.GetUserByIdUseCase;
-import com.rootbr.network.application.usecase.LoginUseCase;
 import com.rootbr.network.application.usecase.RegisterUserUseCase;
 import com.rootbr.network.application.usecase.SearchUsersByNameUseCase;
 import com.rootbr.network.application.usecase.impl.GetUserByIdUseCaseImpl;
-import com.rootbr.network.application.usecase.impl.LoginUseCaseImpl;
 import com.rootbr.network.application.usecase.impl.RegisterUserUseCaseImpl;
 import com.rootbr.network.application.usecase.impl.SearchUsersByNameUseCaseImpl;
 import com.rootbr.network.domain.AllUsers;
@@ -36,7 +34,8 @@ public class SocialNetworkApplication {
     this.searchUsersByNameUseCase = new SearchUsersByNameUseCaseImpl(allUsers, invoker);
   }
 
-  public void getUserById(final CommandAuthor commandAuthor, final String id, final UserRestDto.Builder response)
+  public void getUserById(final CommandAuthor commandAuthor, final String id,
+      final UserRestDto.Builder response)
       throws IOException {
     getUserByIdUseCase.getUserById(commandAuthor, id, response);
   }
@@ -52,15 +51,14 @@ public class SocialNetworkApplication {
       final String encodedPassword,
       final JsonGenerator response
   ) throws IOException {
-    registerUserUseCase.registerUser(commandAuthor, id, firstName, lastName, city, birthdate, biography, encodedPassword, response);
+    registerUserUseCase.registerUser(commandAuthor, id, firstName, lastName, city, birthdate,
+        biography, encodedPassword, response);
   }
 
-  public void searchUsers(final CommandAuthor commandAuthor, final String firstName, final String lastName, final List<UserRestDto> response) {
+  public void searchUsers(final CommandAuthor commandAuthor, final String firstName,
+      final String lastName, final List<UserRestDto> response)
+      throws IOException {
     searchUsersByNameUseCase.searchUsers(commandAuthor, firstName, lastName, response);
-  }
-
-  public boolean login(final String jwt) {
-    return loginUseCase.login(jwt);
   }
 
   public Principal login(final String userId, final String password) {

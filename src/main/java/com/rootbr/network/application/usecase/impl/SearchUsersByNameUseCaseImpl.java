@@ -2,10 +2,11 @@ package com.rootbr.network.application.usecase.impl;
 
 import com.rootbr.network.application.usecase.SearchUsersByNameUseCase;
 import com.rootbr.network.domain.AllUsers;
-import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.engine.Command;
+import com.rootbr.network.domain.engine.CommandAuthor;
 import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
+import java.io.IOException;
 import java.util.List;
 
 public class SearchUsersByNameUseCaseImpl implements SearchUsersByNameUseCase {
@@ -19,7 +20,9 @@ public class SearchUsersByNameUseCaseImpl implements SearchUsersByNameUseCase {
   }
 
   @Override
-  public void searchUsers(final CommandAuthor commandAuthor, String firstName, String lastName, List<UserRestDto> response) {
+  public void searchUsers(final CommandAuthor commandAuthor, String firstName, String lastName,
+      List<UserRestDto> response)
+      throws IOException {
     invoker.invoke(
         commandAuthor, new Command() {
           @Override

@@ -94,7 +94,6 @@
             <version>${jackson-core.version}</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-configuration2</artifactId>

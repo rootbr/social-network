@@ -17,10 +17,9 @@ public class AllUsers {
       final String secondName,
       final String city,
       final LocalDate birthdate,
-      final String biography,
-      final String encodedPassword
+      final String biography
   ) {
-    final User newUser = new User(id, firstName, secondName, city, birthdate, biography, encodedPassword);
+    final User newUser = new User(id, firstName, secondName, city, birthdate, biography);
     newUser.write(userPort);
     return newUser;
   }
