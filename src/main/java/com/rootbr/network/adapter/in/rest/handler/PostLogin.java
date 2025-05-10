@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.rootbr.network.adapter.in.rest.HttpHandler;
+import com.rootbr.network.adapter.in.rest.JsonHttpHandler;
 import com.rootbr.network.adapter.in.rest.HttpMethod;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
@@ -12,22 +12,18 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.util.UUID;
 
-public class PostLogin extends HttpHandler {
+public class PostLogin extends JsonHttpHandler {
 
-  private final JsonFactory factory;
-  private final SocialNetworkApplication socialNetworkApplication;
 
-  public PostLogin(final HttpServer server, final JsonFactory factory,
-      final SocialNetworkApplication socialNetworkApplication) {
-    super(server, "/login", HttpMethod.POST, null);
-    this.factory = factory;
-    this.socialNetworkApplication = socialNetworkApplication;
+  public PostLogin(final HttpServer server, final JsonFactory jsonFactory,
+      final SocialNetworkApplication application) {
+    super(server, "/login", HttpMethod.POST, null, jsonFactory, application);
   }
 
   @Override
   protected void doHandle(final HttpExchange exchange) throws IOException {
     String id = null, password = null;
-    try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {
+    try (final JsonParser parser = jsonFactory.createParser(exchange.getRequestBody())) {
       JsonToken jsonToken;
       while ((jsonToken = parser.nextToken()) != null) {
         if (jsonToken == JsonToken.FIELD_NAME && "id".equals(parser.getText())) {
@@ -45,7 +41,7 @@ public class PostLogin extends HttpHandler {
     }
 
     final String userId = UUID.randomUUID().toString();
-    java.security.Principal principal = socialNetworkApplication.login(userId, password);
+    java.security.Principal principal = application.login(userId, password);
 
     if (principal == null) {
       exchange.sendResponseHeaders(401, -1);
@@ -53,7 +49,7 @@ public class PostLogin extends HttpHandler {
     }
 
     exchange.sendResponseHeaders(200, 0);
-    try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
+    try (final JsonGenerator generator = jsonFactory.createGenerator(exchange.getResponseBody())) {
       generator.writeStartObject();
 //      generator.writeStringField("token", principal.generateToken());
       generator.writeEndObject();

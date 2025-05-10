@@ -13,7 +13,6 @@ import com.rootbr.network.domain.engine.Invoker;
 import com.rootbr.network.domain.port.db.UserPort;
 import com.rootbr.network.domain.port.rest.model.UserRestDto;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,12 +20,15 @@ public class SocialNetworkApplication {
 
   public static final CommandAuthor ANONYMOUS = new CommandAuthor("anonymous");
 
+  private final AuthenticationService authenticationService;
   private final AllUsers allUsers;
   private final RegisterUserUseCase registerUserUseCase;
   private final GetUserByIdUseCase getUserByIdUseCase;
   private final SearchUsersByNameUseCase searchUsersByNameUseCase;
 
-  public SocialNetworkApplication(final UserPort userPort) {
+  public SocialNetworkApplication(final AuthenticationService authenticationService,
+      final UserPort userPort) {
+    this.authenticationService = authenticationService;
     this.allUsers = new AllUsers(userPort);
     final Invoker invoker = new Invoker();
     this.registerUserUseCase = new RegisterUserUseCaseImpl(allUsers, invoker);
@@ -61,7 +63,23 @@ public class SocialNetworkApplication {
     searchUsersByNameUseCase.searchUsers(commandAuthor, firstName, lastName, response);
   }
 
-  public Principal login(final String userId, final String password) {
-    return null;
+  public AppPrincipal login(final String userId, final String password) {
+    authenticationService.createPrincipal(userId, password);
+    return new AppPrincipal(userId, this) {
+      @Override
+      public String getName() {
+        return userId;
+      }
+    };
+  }
+
+  public AppPrincipal createPrincipal(final String userId, final String password) {
+    authenticationService.createPrincipal(userId, password);
+    return new AppPrincipal(userId, this) {
+      @Override
+      public String getName() {
+        return userId;
+      }
+    };
   }
 }

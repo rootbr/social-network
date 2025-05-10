@@ -3,22 +3,29 @@ package com.rootbr.network.adapter.in.rest;
 import static com.rootbr.network.adapter.in.rest.JsonFilter.CONTENT_TYPE_APPLICATION_JSON;
 import static com.rootbr.network.adapter.in.rest.JsonFilter.HEADER_CONTENT_TYPE;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 
-public abstract class HttpHandler implements com.sun.net.httpserver.HttpHandler {
+public abstract class JsonHttpHandler implements com.sun.net.httpserver.HttpHandler {
 
   protected final HttpContext context;
+  protected final JsonFactory jsonFactory;
+  protected final SocialNetworkApplication application;
 
-  public HttpHandler(
+  public JsonHttpHandler(
       final HttpServer server,
       final String path,
       final HttpMethod method,
-      final Authenticator authenticator
+      final Authenticator authenticator, final JsonFactory jsonFactory,
+      final SocialNetworkApplication application
   ) {
+    this.jsonFactory = jsonFactory;
+    this.application = application;
     context = server.createContext(path, this);
     context.getFilters().add(new JsonFilter(method.name()));
     if (authenticator != null) {

@@ -49,14 +49,11 @@ public class RestService {
     final JwtAuthenticator authenticator = new JwtAuthenticator(socialNetworkApplication);
     final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
     server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-
     new PostUserRegister(server, factory, socialNetworkApplication);
     new PostLogin(server, factory, socialNetworkApplication);
     new GetUserById(server, factory, socialNetworkApplication, authenticator);
-
     server.start();
-    System.out.println("Server started on port 8080 with virtual threads by "
-        + (System.nanoTime() - START_APP) / 1000000 + " ms");
+    System.out.println("Server started on port 8080 with virtual threads by " + (System.nanoTime() - START_APP) / 1000000 + " ms");
   }
 
 
