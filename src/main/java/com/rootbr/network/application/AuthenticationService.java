@@ -2,11 +2,11 @@ package com.rootbr.network.application;
 
 public interface AuthenticationService {
 
-  boolean validatePassword(String password, String hashedPassword);
+  void createPrincipal(final String principalId, final String password);
 
-  String generateToken(String id);
+  boolean validatePassword(final String principalId, final String password);
 
-  String authentication(String jwt);
+  String generateJwt(final String principalId);
 
-  void createPrincipal(String userId, String password);
+  String extractPrincipalId(final String jwt);
 }

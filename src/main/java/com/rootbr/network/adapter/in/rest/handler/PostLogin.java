@@ -6,11 +6,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.rootbr.network.adapter.in.rest.JsonHttpHandler;
 import com.rootbr.network.adapter.in.rest.HttpMethod;
+import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
-import java.util.UUID;
 
 public class PostLogin extends JsonHttpHandler {
 
@@ -40,8 +40,7 @@ public class PostLogin extends JsonHttpHandler {
       return;
     }
 
-    final String userId = UUID.randomUUID().toString();
-    java.security.Principal principal = application.login(userId, password);
+    final Principal principal = application.login(id, password);
 
     if (principal == null) {
       exchange.sendResponseHeaders(401, -1);
@@ -51,7 +50,7 @@ public class PostLogin extends JsonHttpHandler {
     exchange.sendResponseHeaders(200, 0);
     try (final JsonGenerator generator = jsonFactory.createGenerator(exchange.getResponseBody())) {
       generator.writeStartObject();
-//      generator.writeStringField("token", principal.generateToken());
+      generator.writeStringField("token", principal.generateJwt());
       generator.writeEndObject();
     }
   }

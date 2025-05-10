@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.adapter.in.rest.JsonHttpHandler;
 import com.rootbr.network.adapter.in.rest.HttpMethod;
-import com.rootbr.network.application.AppPrincipal;
+import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
+import com.rootbr.network.domain.engine.UserVisitor;
 import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -20,16 +21,16 @@ public class GetUserById extends JsonHttpHandler {
 
   @Override
   public void doHandle(final HttpExchange exchange) throws IOException {
-    final AppPrincipal appPrincipal = ((AppPrincipal) exchange.getPrincipal());
+    final Principal principal = ((Principal) exchange.getPrincipal());
     final String userId = exchange.getRequestURI().getPath().substring(7);
     exchange.sendResponseHeaders(200, 0);
     try (final JsonGenerator generator = jsonFactory.createGenerator(exchange.getResponseBody())) {
       generator.writeStartObject();
-//      principal.readUser(userId, new UserVisitor() {
-//        void visitUser(String id) throws IOException {
-//          generator.writeStringField("userId", id);
-//        }
-//      });
+      principal.readUser(userId, new UserVisitor() {
+        void visitUser(String id) throws IOException {
+          generator.writeStringField("userId", id);
+        }
+      });
       generator.writeEndObject();
     }
   }

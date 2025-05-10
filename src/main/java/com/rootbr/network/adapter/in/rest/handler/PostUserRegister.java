@@ -6,12 +6,10 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.rootbr.network.adapter.in.rest.JsonHttpHandler;
 import com.rootbr.network.adapter.in.rest.HttpMethod;
-import com.rootbr.network.application.AppPrincipal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.UUID;
 

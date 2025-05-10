@@ -27,4 +27,16 @@
       </column>
     </createTable>
   </changeSet>
+
+  <changeSet id="2" author="developer">
+    <comment>Create principals table</comment>
+    <createTable tableName="principals">
+      <column name="id" type="VARCHAR(36)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="encoded_password" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
 </databaseChangeLog>

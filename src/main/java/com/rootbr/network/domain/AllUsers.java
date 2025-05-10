@@ -11,7 +11,7 @@ public class AllUsers {
     this.userPort = userPort;
   }
 
-  public User registerNewUser(
+  public void registerNewUser(
       final String id,
       final String firstName,
       final String secondName,
@@ -21,7 +21,6 @@ public class AllUsers {
   ) {
     final User newUser = new User(id, firstName, secondName, city, birthdate, biography);
     newUser.write(userPort);
-    return newUser;
   }
 
   public User getById(final String id) {

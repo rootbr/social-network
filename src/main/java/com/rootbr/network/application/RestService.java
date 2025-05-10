@@ -1,4 +1,4 @@
-package com.rootbr.network.adapter.in.rest;
+package com.rootbr.network.application;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.rootbr.network.adapter.BCryptJwtAuthenticationService;
@@ -6,10 +6,7 @@ import com.rootbr.network.adapter.in.rest.handler.GetUserById;
 import com.rootbr.network.adapter.in.rest.handler.PostLogin;
 import com.rootbr.network.adapter.in.rest.handler.PostUserRegister;
 import com.rootbr.network.adapter.out.db.UserPortImpl;
-import com.rootbr.network.application.AuthenticationService;
-import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.Authenticator;
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 import com.sun.net.httpserver.HttpServer;
@@ -25,11 +22,6 @@ public class RestService {
   public static final long START_APP = System.nanoTime();
 
   public static void main(String[] args) throws IOException {
-
-    final JsonFactory factory = new JsonFactory();
-    final AuthenticationService authenticationService = new BCryptJwtAuthenticationService(
-        "yourStrongSecretKeyWithAtLeast32Characters", 60);
-
     final HikariConfig config = new HikariConfig();
     config.setJdbcUrl("jdbc:postgresql://localhost:5432/db");
     config.setUsername("postgres");
@@ -41,17 +33,25 @@ public class RestService {
     config.addDataSourceProperty("cachePrepStmts", "true");
     config.addDataSourceProperty("prepStmtCacheSize", "250");
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-    final SocialNetworkApplication socialNetworkApplication = new SocialNetworkApplication(
+    final SocialNetworkApplication application = new SocialNetworkApplication(
+        new BCryptJwtAuthenticationService(
+            "yourStrongSecretKeyWithAtLeast32Characters",
+            60
+        ),
         new UserPortImpl(
             new HikariDataSource(config)
         )
     );
-    final JwtAuthenticator authenticator = new JwtAuthenticator(socialNetworkApplication);
     final HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
     server.setExecutor(Executors.newVirtualThreadPerTaskExecutor());
-    new PostUserRegister(server, factory, socialNetworkApplication);
-    new PostLogin(server, factory, socialNetworkApplication);
-    new GetUserById(server, factory, socialNetworkApplication, authenticator);
+
+    final JwtAuthenticator authenticator = new JwtAuthenticator(application);
+    final JsonFactory factory = new JsonFactory();
+
+    new PostUserRegister(server, factory, application);
+    new PostLogin(server, factory, application);
+    new GetUserById(server, factory, application, authenticator);
+
     server.start();
     System.out.println("Server started on port 8080 with virtual threads by " + (System.nanoTime() - START_APP) / 1000000 + " ms");
   }
@@ -70,9 +70,7 @@ public class RestService {
 
     @Override
     public Result authenticate(final HttpExchange exchange) {
-      System.out.println("authenticate");
-      final Headers headers = exchange.getRequestHeaders();
-      final String authHeader = headers.getFirst("Authorization");
+      final String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
       if (authHeader == null) {
         return RETRY;
       }
@@ -80,12 +78,11 @@ public class RestService {
       if (sp == -1 || !authHeader.substring(0, sp).equals("Bearer")) {
         return FAILURE;
       }
-//      final java.security.Principal principal = socialNetworkApplication.login(authHeader.substring(sp + 1));
-//      if (principal == null) {
-//        return FAILURE;
-//      }
-//      return new Authenticator.Success(new HttpPrincipal(principal.getName(), ""));
-      return new Authenticator.Success(new HttpPrincipal("principal.getName()", ""));
+      final HttpPrincipal principal = socialNetworkApplication.authorize(authHeader.substring(sp + 1));
+      if (principal == null) {
+        return FAILURE;
+      }
+      return new Authenticator.Success(principal);
     }
   }
 
