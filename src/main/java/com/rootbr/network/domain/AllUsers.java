@@ -11,18 +11,15 @@ public class AllUsers {
     this.userPort = userPort;
   }
 
-  public User registerNewUser(
+  public void registerNewUser(
       final String id,
       final String firstName,
-      final String secondName,
+      final String lastName,
       final String city,
       final LocalDate birthdate,
-      final String biography,
-      final String encodedPassword
+      final String biography
   ) {
-    final User newUser = new User(id, firstName, secondName, city, birthdate, biography, encodedPassword);
-    newUser.write(userPort);
-    return newUser;
+    userPort.createUser(id, firstName, lastName, city, birthdate, biography);
   }
 
   public User getById(final String id) {

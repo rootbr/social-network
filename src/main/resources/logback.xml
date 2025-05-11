@@ -7,7 +7,7 @@
   </appender>
 
   <!-- Application logs -->
-  <logger name="com.rootbr.highload" level="INFO"/>
+  <logger name="com.rootbr.highload" level="DEBUG"/>
 
   <!-- Root logger -->
   <root level="INFO">

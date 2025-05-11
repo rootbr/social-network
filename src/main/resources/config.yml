@@ -1,0 +1,14 @@
+datasource:
+  jdbcUrl: jdbc:postgresql://localhost:5432/db
+  username: postgres
+  password: postgres
+  minimumIdle: 2
+
+server:
+  port: 8080
+  backlog: 1000
+
+auth:
+  secret: yourStrongSecretKeyWithAtLeast32Characters
+  expiration: 86400
+  cost: 7

@@ -4,29 +4,23 @@
 package com.rootbr.network.adapter.out.db.jooq;
 
 
-import com.rootbr.network.adapter.out.db.jooq.tables.Databasechangelog;
-import com.rootbr.network.adapter.out.db.jooq.tables.Databasechangeloglock;
+import com.rootbr.network.adapter.out.db.jooq.tables.Principals;
 import com.rootbr.network.adapter.out.db.jooq.tables.Users;
 
 
 /**
- * Convenience access to all tables in public.
+ * Convenience access to all tables in the default schema.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
 
     /**
-     * The table <code>public.databasechangelog</code>.
+     * The table <code>principals</code>.
      */
-    public static final Databasechangelog DATABASECHANGELOG = Databasechangelog.DATABASECHANGELOG;
+    public static final Principals PRINCIPALS = Principals.PRINCIPALS;
 
     /**
-     * The table <code>public.databasechangeloglock</code>.
-     */
-    public static final Databasechangeloglock DATABASECHANGELOGLOCK = Databasechangeloglock.DATABASECHANGELOGLOCK;
-
-    /**
-     * The table <code>public.users</code>.
+     * The table <code>users</code>.
      */
     public static final Users USERS = Users.USERS;
 }
