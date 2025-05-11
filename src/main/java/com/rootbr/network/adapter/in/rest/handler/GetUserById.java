@@ -7,15 +7,18 @@ import com.rootbr.network.adapter.in.rest.HttpMethod;
 import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.Authenticator;
+import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
+import java.util.List;
 
 public class GetUserById extends JsonHttpHandler {
 
   public GetUserById(final HttpServer server, final JsonFactory jsonFactory,
-      final SocialNetworkApplication application, final Authenticator authenticator) {
-    super(server, "/user/", HttpMethod.GET, authenticator, jsonFactory, application);
+      final SocialNetworkApplication application, final Authenticator authenticator,
+      final List<Filter> filters) {
+    super(server, "/user/", HttpMethod.GET, authenticator, jsonFactory, application, filters);
   }
 
   @Override

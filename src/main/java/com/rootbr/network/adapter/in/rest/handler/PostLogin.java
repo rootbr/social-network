@@ -8,16 +8,18 @@ import com.rootbr.network.adapter.in.rest.JsonHttpHandler;
 import com.rootbr.network.adapter.in.rest.HttpMethod;
 import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
+import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
+import java.util.List;
 
 public class PostLogin extends JsonHttpHandler {
 
 
   public PostLogin(final HttpServer server, final JsonFactory jsonFactory,
-      final SocialNetworkApplication application) {
-    super(server, "/login", HttpMethod.POST, null, jsonFactory, application);
+      final SocialNetworkApplication application, final List<Filter> filters) {
+    super(server, "/login", HttpMethod.POST, null, jsonFactory, application, filters);
   }
 
   @Override

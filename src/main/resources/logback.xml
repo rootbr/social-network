@@ -10,7 +10,7 @@
   <logger name="com.rootbr.highload" level="DEBUG"/>
 
   <!-- Root logger -->
-  <root level="INFO">
+  <root level="DEBUG">
     <appender-ref ref="Console" />
   </root>
 </configuration>
