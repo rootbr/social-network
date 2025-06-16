@@ -1,8 +1,8 @@
-datasource:
-  jdbcUrl: jdbc:postgresql://localhost:5432/db
+dataSource:
+  jdbcUrl: jdbc:postgresql://localhost:5432/postgres
   username: postgres
   password: postgres
-  minimumIdle: 2
+  minimumIdle: 1
 
 server:
   port: 8080

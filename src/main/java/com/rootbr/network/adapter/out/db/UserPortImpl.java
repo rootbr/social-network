@@ -1,73 +1,66 @@
 package com.rootbr.network.adapter.out.db;
 
-import static com.rootbr.network.adapter.out.db.jooq.Tables.USERS;
-
-import com.rootbr.network.adapter.out.db.jooq.tables.records.UsersRecord;
-import com.rootbr.network.domain.User;
-import com.rootbr.network.domain.Users;
-import com.rootbr.network.domain.port.db.UserPort;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import javax.sql.DataSource;
-import org.jooq.DSLContext;
-import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
+import com.rootbr.network.application.port.UserPort;
+import com.rootbr.network.application.visitor.UsersVisitor;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserPortImpl implements UserPort {
 
-  private final DSLContext dsl;
-
-  public UserPortImpl(final DataSource dataSource) {
-    this.dsl = DSL.using(dataSource, SQLDialect.POSTGRES);
-  }
+  private static final String sqlCreate = "INSERT INTO users (id, first_name, last_name, birth_date, biography, city) VALUES (?, ?, ?, ?, ?, ?)";
 
   @Override
-  public User getUserById(final String id) {
-    final UsersRecord record = dsl.selectFrom(USERS)
-        .where(USERS.ID.eq(id))
-        .fetchOne();
-    return record == null ? null : new User(record.getId(), record.getFirstName(),
-        record.getLastName(), record.getCity(), record.getBirthDate(), record.getBiography());
-  }
-
-  @Override
-  public Users searchUsers(final String firstName, final String lastName) {
-    final Result<UsersRecord> records = dsl.selectFrom(USERS)
-        .where(
-            USERS.FIRST_NAME.containsIgnoreCase(firstName)
-                .and(USERS.LAST_NAME.containsIgnoreCase(lastName))
-        )
-        .fetch();
-
-    final List<User> userList = new ArrayList<>();
-    for (final UsersRecord record : records) {
-      userList.add(
-          new User(
-              record.getId(),
-              record.getFirstName(),
-              record.getLastName(),
-              record.getCity(),
-              record.getBirthDate(),
-              record.getBiography()
-          )
-      );
+  public void create(final Connection connection, final String id, final String firstName, final String secondName, 
+                    final String birthdate, final String biography, final String city) throws SQLException {
+    try (final PreparedStatement ps = connection.prepareStatement(sqlCreate)) {
+      ps.setString(1, id);
+      ps.setString(2, firstName);
+      ps.setString(3, secondName);
+      ps.setString(4, birthdate);
+      ps.setString(5, biography);
+      ps.setString(6, city);
+      final int rowsAffected = ps.executeUpdate();
+      if (rowsAffected == 0) {
+        throw new RuntimeException("No rows were inserted");
+      }
     }
+  }
 
-    return new Users(userList);
+  private static final String sqlGetUserById = "SELECT id, first_name, last_name, birth_date, biography, city FROM users WHERE id = ?";
+
+  @Override
+  public void readUserData(final Connection connection, final String id, final UsersVisitor usersVisitor) throws SQLException {
+    try (final PreparedStatement ps = connection.prepareStatement(sqlGetUserById)) {
+      ps.setString(1, id);
+      try (final ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+          usersVisitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3), 
+                               rs.getString(4), rs.getString(5), rs.getString(6));
+        }
+      }
+    }
   }
 
   @Override
-  public void createUser(final String id, final String firstName, final String secondName,
-      final String city, final LocalDate birthdate, final String biography) {
-    dsl.insertInto(USERS)
-        .set(USERS.ID, id)
-        .set(USERS.FIRST_NAME, firstName)
-        .set(USERS.LAST_NAME, secondName)
-        .set(USERS.CITY, city)
-        .set(USERS.BIRTH_DATE, birthdate)
-        .set(USERS.BIOGRAPHY, biography)
-        .execute();
+  public void getUserById(final Connection connection, final String userId, final UsersVisitor visitor) throws SQLException {
+    readUserData(connection, userId, visitor);
+  }
+
+  private static final String sqlSearchUsers = "SELECT id, first_name, last_name, birth_date, biography, city FROM users WHERE first_name LIKE ? AND last_name LIKE ?";
+
+  @Override
+  public void searchUsers(final Connection connection, final String firstName, final String lastName, final UsersVisitor visitor) throws SQLException {
+    try (final PreparedStatement ps = connection.prepareStatement(sqlSearchUsers)) {
+      ps.setString(1, firstName + "%");
+      ps.setString(2, lastName + "%");
+      try (final ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+          visitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3), 
+                          rs.getString(4), rs.getString(5), rs.getString(6));
+        }
+      }
+    }
   }
 }

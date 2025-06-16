@@ -6,11 +6,32 @@
     </encoder>
   </appender>
 
-  <!-- Application logs -->
-  <logger name="com.rootbr.highload" level="DEBUG"/>
+  <!-- Daily rolling file appender with 30-day retention -->
+  <appender name="DailyFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>logs/legal-ai.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- Daily rotation pattern -->
+      <fileNamePattern>logs/legal-ai.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <!-- Keep maximum 30 days -->
+      <maxHistory>30</maxHistory>
+      <!-- Max file size before creating new file within the day -->
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <!-- Remove files older than 30 days -->
+      <cleanHistoryOnStart>true</cleanHistoryOnStart>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{ISO8601} %-5level [%t] %C{1}: %msg%n%throwable</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Application logger with DEBUG level for your classes -->
+  <logger name="com.rootbr.legalai" level="DEBUG" />
 
   <!-- Root logger -->
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="Console" />
+    <appender-ref ref="DailyFile" />
   </root>
 </configuration>
