@@ -16,16 +16,9 @@ public class DialogSendHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
       throws IOException {
-    final String path = exchange.getRequestURI().getPath();
-    final String toUserId = extractPathVariable(path, "/dialog/", "/send");
-
-    if (toUserId == null) {
-      exchange.sendResponseHeaders(400, -1);
-      return;
-    }
-
+    final String toUserId = pathVariables[0];
     String text = null;
     try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {
       JsonToken jsonToken;
@@ -36,24 +29,11 @@ public class DialogSendHandler implements RestHandler {
         }
       }
     }
-
-    if (text == null) {
+    if (toUserId == null || text == null) {
       exchange.sendResponseHeaders(400, -1);
       return;
     }
-
     principal.execute(application.sendMessageCommand(toUserId, text));
     exchange.sendResponseHeaders(200, -1);
-  }
-
-  private String extractPathVariable(final String path, final String prefix, final String suffix) {
-    if (path.startsWith(prefix) && path.endsWith(suffix)) {
-      final int start = prefix.length();
-      final int end = path.length() - suffix.length();
-      if (start < end) {
-        return path.substring(start, end);
-      }
-    }
-    return null;
   }
 }

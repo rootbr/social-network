@@ -17,22 +17,12 @@ public class PostDeleteHandler implements RestHandler {
       final Principal principal, final SocialNetworkApplication application,
       final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
       throws IOException {
-    final String path = exchange.getRequestURI().getPath();
-    final String postId = extractPathVariable(path, "/post/delete/");
-
+    final String postId = pathVariables[0];
     if (postId == null) {
       exchange.sendResponseHeaders(400, -1);
       return;
     }
-
     principal.execute(application.deletePostCommand(postId));
     exchange.sendResponseHeaders(200, -1);
-  }
-
-  private String extractPathVariable(final String path, final String prefix) {
-    if (path.startsWith(prefix)) {
-      return path.substring(prefix.length());
-    }
-    return null;
   }
 }
