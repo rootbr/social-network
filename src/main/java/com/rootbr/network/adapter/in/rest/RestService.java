@@ -107,20 +107,6 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/post/get/{id}",
-            new ErrorInterceptor(
-                new AnanimousRestHandler(
-                    tokenService,
-                    application,
-                    new ApplicationJsonRestHandler(
-                        jsonFactory,
-                        new PostGetHandler()
-                    )
-                )
-            )
-        )
-        // Authenticated endpoints
-        .registerHttpHandler(
             PUT, "/friend/set/{user_id}",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
@@ -181,6 +167,19 @@ public class RestService {
                     new ApplicationJsonRestHandler(
                         jsonFactory,
                         new PostDeleteHandler()
+                    )
+                )
+            )
+        )
+        .registerHttpHandler(
+            GET, "/post/get/{id}",
+            new ErrorInterceptor(
+                new AnanimousRestHandler(
+                    tokenService,
+                    application,
+                    new ApplicationJsonRestHandler(
+                        jsonFactory,
+                        new PostGetHandler()
                     )
                 )
             )

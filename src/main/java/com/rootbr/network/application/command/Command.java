@@ -16,7 +16,7 @@ public abstract class Command {
     public boolean authorize(final String id, final String login) {
         principalId = id;
         principalLogin = login;
-        return true;
+        return false;
     }
 
     public abstract void execute(final DataSource dataSource);
