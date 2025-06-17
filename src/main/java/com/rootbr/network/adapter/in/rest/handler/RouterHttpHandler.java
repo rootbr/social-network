@@ -29,10 +29,8 @@ public class RouterHttpHandler implements HttpHandler {
   public void handle(final HttpExchange exchange) throws IOException {
     final HttpMethod method = HttpMethod.of(exchange.getRequestMethod());
     final String path = exchange.getRequestURI().getPath();
-    final RestHandler handler = routers.get(method).route(path);
-    if (handler != null) {
-      handler.handle(exchange, null, null, null);
-    } else {
+    final boolean routeHandled = routers.get(method).route(path, exchange);
+    if (!routeHandled) {
       exchange.sendResponseHeaders(404, NOT_FOUND_RESPONSE.length());
       exchange.getResponseBody().write(NOT_FOUND_RESPONSE.getBytes());
       exchange.getResponseBody().flush();

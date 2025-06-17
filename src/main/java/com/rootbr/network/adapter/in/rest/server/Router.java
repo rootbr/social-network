@@ -1,5 +1,7 @@
 package com.rootbr.network.adapter.in.rest.server;
 
+import com.sun.net.httpserver.HttpExchange;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,10 +10,11 @@ public class Router {
   private final Node root = new Node();
   private final Map<String, RestHandler> staticPath = new HashMap<>();
 
-  public RestHandler route(final String path) {
+  public boolean route(final String path, final HttpExchange exchange) throws IOException {
     final RestHandler handler = staticPath.get(path);
     if (handler != null) {
-      return handler;
+      handler.handle(exchange, null, null, null);
+      return true;
     }
     final String[] parts = path.split("/");
     Node node = root;
@@ -23,14 +26,15 @@ public class Router {
         if (node.variable != null) {
           node = node.variable;
         } else {
-          return null;
+          return false;
         }
       }
     }
     if (node.handler != null) {
-      return node.handler;
+      node.handler.handle(exchange, null, null, null);
+      return true;
     } else {
-      return null;
+      return false;
     }
   }
 
