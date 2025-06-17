@@ -11,7 +11,7 @@ import java.io.IOException;
 public class GetChatsHandler implements RestHandler {
 
   @Override
-  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application) throws IOException {
+  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
     exchange.sendResponseHeaders(200, 0);
     try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
       generator.writeStartArray();

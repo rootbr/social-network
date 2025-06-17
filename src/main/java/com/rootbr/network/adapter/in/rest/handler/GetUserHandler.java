@@ -9,24 +9,23 @@ import com.rootbr.network.application.visitor.UsersVisitor;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 
-public class GetProfileHandler implements RestHandler {
+public class GetUserHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application)
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables)
       throws IOException {
-    final String path = exchange.getRequestURI().getPath();
-    final String userId = extractPathVariable(path, "/user/get/");
-    
-    if (userId == null) {
+    if (pathVariables.length == 0) {
       exchange.sendResponseHeaders(400, -1);
       return;
     }
+    
+    final String userId = pathVariables[0];
 
     final String[] userData = new String[6]; // id, firstName, lastName, birthdate, biography, city
     final UsersVisitor visitor = new UsersVisitor() {
       @Override
-      public void visitUser(final String id, final String firstName, final String lastName, 
+      public void visitUser(final String id, final String firstName, final String lastName,
                           final String birthdate, final String biography, final String city) {
         userData[0] = id;
         userData[1] = firstName;
@@ -57,10 +56,4 @@ public class GetProfileHandler implements RestHandler {
     }
   }
 
-  private String extractPathVariable(final String path, final String prefix) {
-    if (path.startsWith(prefix)) {
-      return path.substring(prefix.length());
-    }
-    return null;
-  }
 }

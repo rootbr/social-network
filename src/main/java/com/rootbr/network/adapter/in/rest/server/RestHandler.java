@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public interface RestHandler {
 
-  void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application)
+  void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables)
       throws IOException;
 
 }

@@ -3,7 +3,10 @@
     "allow": [
       "Bash(find:*)",
       "Bash(ls:*)",
-      "Bash(mvn clean:*)"
+      "Bash(mvn clean:*)",
+      "Bash(git add:*)",
+      "Bash(mvn compile:*)",
+      "Bash(grep:*)"
     ],
     "deny": []
   }

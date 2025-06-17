@@ -22,9 +22,9 @@ public class ErrorInterceptor implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application) throws IOException {
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
     try {
-      delegate.handle(exchange, factory, principal, application);
+      delegate.handle(exchange, factory, principal, application, pathVariables);
     } catch (final Exception e) {
       log.error("Error handling request", e);
       exchange.sendResponseHeaders(500, 0);

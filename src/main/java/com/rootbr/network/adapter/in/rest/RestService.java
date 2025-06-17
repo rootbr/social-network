@@ -13,7 +13,7 @@ import com.rootbr.network.adapter.in.rest.handler.DialogListHandler;
 import com.rootbr.network.adapter.in.rest.handler.DialogSendHandler;
 import com.rootbr.network.adapter.in.rest.handler.FriendDeleteHandler;
 import com.rootbr.network.adapter.in.rest.handler.FriendSetHandler;
-import com.rootbr.network.adapter.in.rest.handler.GetProfileHandler;
+import com.rootbr.network.adapter.in.rest.handler.GetUserHandler;
 import com.rootbr.network.adapter.in.rest.handler.LoginHandler;
 import com.rootbr.network.adapter.in.rest.handler.PostCreateHandler;
 import com.rootbr.network.adapter.in.rest.handler.PostDeleteHandler;
@@ -54,47 +54,11 @@ public class RestService {
         new PrincipalPortImpl()
     );
     new Server(config.properties("server"), executor)
-        // Anonymous endpoints
-        .registerHttpHandler(
-            GET, "/user/get/{id}",
-            new ErrorInterceptor(
-                new AnanimousRestHandler(
-                    application,
-                    new ApplicationJsonRestHandler(
-                        jsonFactory,
-                        new GetProfileHandler()
-                    )
-                )
-            )
-        )
-        .registerHttpHandler(
-            GET, "/user/search",
-            new ErrorInterceptor(
-                new AnanimousRestHandler(
-                    application,
-                    new ApplicationJsonRestHandler(
-                        jsonFactory,
-                        new UserSearchHandler()
-                    )
-                )
-            )
-        )
-        .registerHttpHandler(
-            GET, "/post/get/{id}",
-            new ErrorInterceptor(
-                new AnanimousRestHandler(
-                    application,
-                    new ApplicationJsonRestHandler(
-                        jsonFactory,
-                        new PostGetHandler()
-                    )
-                )
-            )
-        )
         .registerHttpHandler(
             POST, "/login",
             new ErrorInterceptor(
                 new AnanimousRestHandler(
+                    tokenService,
                     application,
                     new ApplicationJsonRestHandler(
                         jsonFactory,
@@ -107,10 +71,50 @@ public class RestService {
             POST, "/user/register",
             new ErrorInterceptor(
                 new AnanimousRestHandler(
+                    tokenService,
                     application,
                     new ApplicationJsonRestHandler(
                         jsonFactory,
                         new UserRegisterHandler()
+                    )
+                )
+            )
+        )
+        .registerHttpHandler(
+            GET, "/user/get/{id}",
+            new ErrorInterceptor(
+                new AnanimousRestHandler(
+                    tokenService,
+                    application,
+                    new ApplicationJsonRestHandler(
+                        jsonFactory,
+                        new GetUserHandler()
+                    )
+                )
+            )
+        )
+        .registerHttpHandler(
+            GET, "/user/search",
+            new ErrorInterceptor(
+                new AnanimousRestHandler(
+                    tokenService,
+                    application,
+                    new ApplicationJsonRestHandler(
+                        jsonFactory,
+                        new UserSearchHandler()
+                    )
+                )
+            )
+        )
+        .registerHttpHandler(
+            GET, "/post/get/{id}",
+            new ErrorInterceptor(
+                new AnanimousRestHandler(
+                    tokenService,
+                    application,
+                    new ApplicationJsonRestHandler(
+                        jsonFactory,
+                        new PostGetHandler()
                     )
                 )
             )

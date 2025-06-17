@@ -27,12 +27,12 @@ public class ApplicationJsonRestHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory jsonFactory,
-      final Principal principal, final SocialNetworkApplication application) throws IOException {
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
     final List<String> headersAccept = exchange.getRequestHeaders().get(HEADER_ACCEPT);
     final boolean notAcceptable = headersAccept == null || headersAccept.isEmpty() || !headersAccept.getFirst().contains(CONTENT_TYPE_APPLICATION_JSON);
     if (!notAcceptable) {
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
-      handler.handle(exchange, this.jsonFactory, principal, application);
+      handler.handle(exchange, this.jsonFactory, principal, application, pathVariables);
     } else {
       final InputStream i = exchange.getRequestBody();
       while (i.read(b) != -1) ;

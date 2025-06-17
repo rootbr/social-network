@@ -20,7 +20,7 @@ public class LoginHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal p, final SocialNetworkApplication application)
+      final Principal p, final SocialNetworkApplication application, final String[] pathVariables)
       throws IOException {
     String userId = null, password = null;
     try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {

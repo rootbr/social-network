@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class CreateChatHandler implements RestHandler {
   @Override
-  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application) throws IOException {
+  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
     final String chatId = exchange.getRequestURI().getPath().substring(11);
     principal.execute(application.createChatCommand(chatId, (id, title, lastMessage, date) -> {
       exchange.sendResponseHeaders(200, 0);

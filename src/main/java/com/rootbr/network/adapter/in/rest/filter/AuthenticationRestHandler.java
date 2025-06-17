@@ -24,7 +24,7 @@ public class AuthenticationRestHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal p, final SocialNetworkApplication application) throws IOException {
+      final Principal p, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
     final String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
     if (authHeader == null) {
       consumeInputAndReject(exchange);
@@ -41,7 +41,7 @@ public class AuthenticationRestHandler implements RestHandler {
       consumeInputAndReject(exchange);
       return;
     }
-    this.delegate.handle(exchange, factory, principal, this.application);
+    this.delegate.handle(exchange, factory, principal, this.application, pathVariables);
   }
 
 
