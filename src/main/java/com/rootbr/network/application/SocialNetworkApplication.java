@@ -60,21 +60,6 @@ public class SocialNetworkApplication {
     };
   }
 
-  public Command changePasswordCommand(final String currentPassword, final String newPassword) {
-    return new TransactionalCommand() {
-      @Override
-      protected void transaction(final Connection connection) throws Exception {
-        final Principal principal = new Principal(dataSource);
-        principalPort.readEncodedPasswordByPrincipalId(connection, principalId,
-            principal.visitor());
-        if (principal.verifyPassword(passwordEncoder, currentPassword)) {
-          principalPort.changePassword(connection, principalId,
-              passwordEncoder.encode(newPassword));
-        }
-      }
-    };
-  }
-
   public Command getUserByIdCommand(final String userId, final UsersVisitor visitor) {
     return new ReadCommand() {
       @Override
