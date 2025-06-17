@@ -1,5 +1,3 @@
-// src/main/java/com/rootbr/legalai/adapter/in/rest/handler/CreateChatHandler.java
-
 package com.rootbr.network.adapter.in.rest.handler;
 
 import com.fasterxml.jackson.core.JsonFactory;

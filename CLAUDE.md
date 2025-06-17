@@ -52,10 +52,12 @@ This is a **hexagonal architecture** (clean architecture) Java application with 
 ### Technology Stack
 - **Java 21** with virtual threads for high concurrency
 - **Custom HTTP Server** using `com.sun.net.httpserver` (no Spring Framework)
-- **PostgreSQL** with raw JDBC (no ORM)
+- **PostgreSQL** with raw JDBC and HikariCP connection pooling
 - **Liquibase** for database migrations
-- **JWT** for authentication
+- **JWT** for authentication (JJWT 0.12.6)
 - **BCrypt** for password hashing
+- **Jackson 2.19.0** for JSON processing
+- **Commons Configuration2** for flexible configuration management
 
 ## Database Schema
 
@@ -76,9 +78,15 @@ All endpoints follow REST principles with JWT authentication where required. See
 ## Configuration
 
 - Main config: `src/main/resources/config.yml`
-- Environment variable overrides supported
-- Database URL: `DATASOURCE_JDBCURL`
-- JWT secret and expiration configurable
+- Environment variable overrides: Any config.yml property can be overridden using uppercase with underscores
+  - Examples: `DATASOURCE_JDBCURL`, `SERVER_PORT`, `LOGGING_LEVEL_ROOT`
+- Key environment variables:
+  - `DATASOURCE_JDBCURL`: Database connection URL
+  - `DATASOURCE_USERNAME`: Database username
+  - `DATASOURCE_PASSWORD`: Database password
+  - `JWT_SECRET`: JWT signing secret
+  - `JWT_EXPIRATION`: JWT token expiration time
+- HikariCP connection pool configured via `minimumIdle` and other pool settings
 
 ## Development Notes
 
@@ -89,9 +97,11 @@ All endpoints follow REST principles with JWT authentication where required. See
 - Filter chain for CORS, authentication, error handling
 
 **Business Logic:**
-- All operations are commands extend abstract class `Command`
-- Commands are executed through `Principal` and are created through `SocialNetworkApplication`
+- All operations are commands that extend abstract class `Command`
+- Commands are executed through `Principal` and created through `SocialNetworkApplication`
+- Commands have `authorize()` method that returns boolean for access control
 - Database operations use visitor pattern for result processing
+- REST handlers support path variables and query parameters through updated interface
 
 **Error Handling:**
 - Custom error interceptor in `filter/ErrorInterceptor`
@@ -102,6 +112,13 @@ All endpoints follow REST principles with JWT authentication where required. See
 - JWT tokens for authentication
 - BCrypt password hashing with cost factor 7
 - CORS enabled for cross-origin requests
+- Command-level authorization with boolean return flags
+
+**Logging:**
+- Dual configuration: `logback.xml` (production) and `logback-local.xml` (development)
+- Production: File logging with daily rotation, 100MB max files, 30-day retention
+- Development: Console logging only
+- Logs written to `logs/` directory (Docker volume mounted)
 
 ## Testing Gap
 

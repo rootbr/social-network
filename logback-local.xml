@@ -5,7 +5,7 @@
       <pattern>%d{ISO8601} %highlight(%-5level) [%blue(%t)] %yellow(%C{1}): %msg%n%throwable</pattern>
     </encoder>
   </appender>
-  <logger name="com.rootbr.legalai" level="DEBUG" />
+  <logger name="com.rootbr.network" level="DEBUG" />
   <root level="INFO">
     <appender-ref ref="Console" />
   </root>

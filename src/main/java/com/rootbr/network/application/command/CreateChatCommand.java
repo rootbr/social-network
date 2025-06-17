@@ -2,19 +2,19 @@ package com.rootbr.network.application.command;
 
 import static com.rootbr.network.adapter.out.db.MessagePortImpl.ROLE_ASSISTANT;
 
-import com.rootbr.legalai.application.LegalAiApplication;
+import com.rootbr.network.application.SocialNetworkApplication;
 import com.rootbr.network.application.visitor.ChatsVisitor;
 import java.sql.Connection;
 
 public class CreateChatCommand extends TransactionalCommand {
 
-  private final LegalAiApplication application;
+  private final SocialNetworkApplication application;
   private final String chatId;
   private final ChatsVisitor response;
   private final String titleChat;
   private final String aiResponse;
 
-  public CreateChatCommand(final LegalAiApplication application, final String chatId, final ChatsVisitor response) {
+  public CreateChatCommand(final SocialNetworkApplication application, final String chatId, final ChatsVisitor response) {
     this.application = application;
     this.chatId = chatId;
     this.response = response;

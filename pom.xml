@@ -134,7 +134,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>legal-ai-1.0.0</finalName>
+                            <finalName>social-network-1.0.0</finalName>
                             <shadedArtifactAttached>false</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">

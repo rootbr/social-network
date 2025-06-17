@@ -8,10 +8,10 @@
 
   <!-- Daily rolling file appender with 30-day retention -->
   <appender name="DailyFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/legal-ai.log</file>
+    <file>logs/social-network.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- Daily rotation pattern -->
-      <fileNamePattern>logs/legal-ai.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+      <fileNamePattern>logs/social-network.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <!-- Keep maximum 30 days -->
       <maxHistory>30</maxHistory>
       <!-- Max file size before creating new file within the day -->
@@ -26,8 +26,7 @@
     </encoder>
   </appender>
 
-  <!-- Application logger with DEBUG level for your classes -->
-  <logger name="com.rootbr.legalai" level="DEBUG" />
+  <logger name="com.rootbr.network" level="DEBUG" />
 
   <!-- Root logger -->
   <root level="INFO">

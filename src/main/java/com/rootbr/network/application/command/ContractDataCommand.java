@@ -1,20 +1,18 @@
-// src/main/java/com/rootbr/legalai/application/ContractDataCommand.java (обновленная версия)
-
 package com.rootbr.network.application.command;
 
-import com.rootbr.legalai.application.LegalAiApplication;
+import com.rootbr.network.application.SocialNetworkApplication;
 import java.sql.Connection;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class ContractDataCommand extends TransactionalCommand {
 
-  private final LegalAiApplication application;
+  private final SocialNetworkApplication application;
   private final String chatId;
   private final BiConsumer<String, String> response;
   private Map<String, String> parameters;
 
-  public ContractDataCommand(final LegalAiApplication application, final String chatId, final BiConsumer<String, String> response) {
+  public ContractDataCommand(final SocialNetworkApplication application, final String chatId, final BiConsumer<String, String> response) {
     this.application = application;
     this.chatId = chatId;
     this.response = response;

@@ -1,19 +1,16 @@
-// src/main/java/com/rootbr/legalai/application/NewMessageCommand.java
-
 package com.rootbr.network.application.command;
 
 import static com.rootbr.network.adapter.out.db.MessagePortImpl.ROLE_ASSISTANT;
 import static com.rootbr.network.adapter.out.db.MessagePortImpl.ROLE_USER;
 
-import com.rootbr.legalai.application.LegalAiApplication;
 import com.rootbr.network.adapter.in.rest.ApplicationConfiguration.Question;
+import com.rootbr.network.application.SocialNetworkApplication;
 import com.rootbr.network.application.visitor.AnswerVisitor;
 import java.sql.Connection;
 import java.util.Map;
 
 public class NewMessageCommand extends TransactionalCommand {
 
-  private final LegalAiApplication application;
   private final String chatId;
   private final int messageId;
   private final Question question;
@@ -23,10 +20,9 @@ public class NewMessageCommand extends TransactionalCommand {
   private String answerValue;
   private Question nextQuestion;
 
-  public NewMessageCommand(final LegalAiApplication application, final String chatId,
+  public NewMessageCommand(final SocialNetworkApplication application, final String chatId,
       final int messageId, final String questionType, final String userAnswer,
       final AnswerVisitor response) {
-    this.application = application;
     this.chatId = chatId;
     this.messageId = messageId;
     this.question = application.questions.get(questionType);
