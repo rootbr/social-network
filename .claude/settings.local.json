@@ -49,7 +49,9 @@
       "WebFetch(domain:stackoverflow.com)",
       "WebFetch(domain:liquibase.org)",
       "WebFetch(domain:postgresql.org)",
-      "WebFetch(domain:docker.com)"
+      "WebFetch(domain:docker.com)",
+      "WebFetch(domain:www.conventionalcommits.org)",
+      "WebFetch(domain:semver.org)"
     ],
     "deny": [
       "Bash(git push:*)",
