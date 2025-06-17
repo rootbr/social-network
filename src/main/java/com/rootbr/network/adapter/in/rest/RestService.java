@@ -51,7 +51,7 @@ public class RestService {
     );
     new Server(config.properties("server"), executor)
         .registerHttpHandler(
-            POST, "/login",
+            POST, "/api/login",
             new ErrorInterceptor(
                 new AnonymousRestHandler(
                     tokenService,
@@ -64,7 +64,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            POST, "/user/register",
+            POST, "/api/user/register",
             new ErrorInterceptor(
                 new AnonymousRestHandler(
                     tokenService,
@@ -77,7 +77,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/user/get/{id}",
+            GET, "/api/user/get/${id}",
             new ErrorInterceptor(
                 new AnonymousRestHandler(
                     tokenService,
@@ -90,7 +90,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/user/search",
+            GET, "/api/user/search",
             new ErrorInterceptor(
                 new AnonymousRestHandler(
                     tokenService,
@@ -103,7 +103,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            PUT, "/friend/set/{user_id}",
+            PUT, "/api/friend/set/${user_id}",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -116,7 +116,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            PUT, "/friend/delete/{user_id}",
+            PUT, "/api/friend/delete/${user_id}",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -129,7 +129,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            POST, "/post/create",
+            POST, "/api/post/create",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -142,7 +142,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            PUT, "/post/update",
+            PUT, "/api/post/update",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -155,7 +155,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            PUT, "/post/delete/{id}",
+            PUT, "/api/post/delete/${id}",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -168,7 +168,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/post/get/{id}",
+            GET, "/api/post/get/${id}",
             new ErrorInterceptor(
                 new AnonymousRestHandler(
                     tokenService,
@@ -181,7 +181,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/post/feed",
+            GET, "/api/post/feed",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -194,7 +194,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            POST, "/dialog/{user_id}/send",
+            POST, "/api/dialog/${user_id}/send",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,
@@ -207,7 +207,7 @@ public class RestService {
             )
         )
         .registerHttpHandler(
-            GET, "/dialog/{user_id}/list",
+            GET, "/api/dialog/${user_id}/list",
             new ErrorInterceptor(
                 new AuthenticationRestHandler(
                     tokenService,

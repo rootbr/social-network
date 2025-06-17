@@ -1,4 +1,8 @@
 {
+  "env": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+  },
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(./jlink-runtime/bin/java -jar target/*.jar)",
@@ -100,7 +104,11 @@
       "WebFetch(domain:semver.org)",
       "WebFetch(domain:spring.io)",
       "WebFetch(domain:stackoverflow.com)",
-      "WebFetch(domain:www.conventionalcommits.org)"
+      "WebFetch(domain:www.conventionalcommits.org)",
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(python3:*)",
+      "Bash(pkill:*)"
     ],
     "deny": [
       "Bash(curl * | sh)",
@@ -117,9 +125,5 @@
       "Bash(wget * | sh)",
       "Bash(wget:*)"
     ]
-  },
-  "env": {
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
-  },
-  "includeCoAuthoredBy": false
+  }
 }
