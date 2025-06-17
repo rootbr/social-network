@@ -18,9 +18,6 @@ import com.rootbr.network.application.visitor.PostVisitor;
 import com.rootbr.network.application.visitor.UsersVisitor;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.LinkedHashMap;
-import java.util.Properties;
-import java.util.function.BiConsumer;
 import javax.sql.DataSource;
 
 public class SocialNetworkApplication {

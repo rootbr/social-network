@@ -5,7 +5,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.adapter.in.rest.server.RestHandler;
-import com.rootbr.legalai.application.LegalAiApplication;
 import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;

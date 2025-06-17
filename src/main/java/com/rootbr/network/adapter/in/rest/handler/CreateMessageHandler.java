@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.rootbr.network.adapter.in.rest.server.RestHandler;
-import com.rootbr.legalai.application.LegalAiApplication;
 import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;

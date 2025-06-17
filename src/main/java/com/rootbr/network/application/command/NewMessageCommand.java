@@ -5,8 +5,8 @@ package com.rootbr.network.application.command;
 import static com.rootbr.network.adapter.out.db.MessagePortImpl.ROLE_ASSISTANT;
 import static com.rootbr.network.adapter.out.db.MessagePortImpl.ROLE_USER;
 
-import com.rootbr.network.adapter.in.rest.ApplicationConfiguration.Question;
 import com.rootbr.legalai.application.LegalAiApplication;
+import com.rootbr.network.adapter.in.rest.ApplicationConfiguration.Question;
 import com.rootbr.network.application.visitor.AnswerVisitor;
 import java.sql.Connection;
 import java.util.Map;

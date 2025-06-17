@@ -4,9 +4,7 @@ import static com.rootbr.network.adapter.in.rest.server.HttpMethod.GET;
 import static com.rootbr.network.adapter.in.rest.server.HttpMethod.POST;
 import static com.rootbr.network.adapter.in.rest.server.HttpMethod.PUT;
 
-import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.rootbr.network.adapter.in.rest.filter.AnanimousRestHandler;
 import com.rootbr.network.adapter.in.rest.filter.ApplicationJsonRestHandler;
 import com.rootbr.network.adapter.in.rest.filter.AuthenticationRestHandler;
@@ -33,9 +31,7 @@ import com.rootbr.network.adapter.out.db.UserPortImpl;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
