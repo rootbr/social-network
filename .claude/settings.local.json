@@ -3,11 +3,63 @@
     "allow": [
       "Bash(find:*)",
       "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(less:*)",
+      "Bash(tree:*)",
+      "Bash(ps:*)",
+      "Bash(netstat:*)",
+      "Bash(lsof:*)",
+      "Bash(jq:*)",
       "Bash(mvn clean:*)",
-      "Bash(git add:*)",
       "Bash(mvn compile:*)",
-      "Bash(grep:*)"
+      "Bash(mvn test:*)",
+      "Bash(mvn package:*)",
+      "Bash(mvn liquibase:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(docker build:*)",
+      "Bash(docker run:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(java:*)",
+      "Bash(javac:*)",
+      "Bash(jmeter:*)",
+      "Bash(psql:*)",
+      "Bash(curl localhost:*)",
+      "Bash(curl 127.0.0.1:*)",
+      "Bash(curl http://localhost:*)",
+      "Bash(curl http://127.0.0.1:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:maven.apache.org)",
+      "WebFetch(domain:docs.oracle.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:liquibase.org)",
+      "WebFetch(domain:postgresql.org)",
+      "WebFetch(domain:docker.com)"
     ],
-    "deny": []
-  }
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "env": {
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+  },
+  "includeCoAuthoredBy": false
 }
