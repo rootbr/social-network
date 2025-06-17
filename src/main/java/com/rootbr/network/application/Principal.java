@@ -24,12 +24,16 @@ public class Principal {
     this.dataSource = dataSource;
   }
 
-  public void execute(final Command... commands) {
+  public boolean execute(final Command... commands) {
+    boolean allAuthorized = true;
     for (final Command command : commands) {
       if (command.authorize(id, login)) {
         command.execute(dataSource);
+      } else {
+        allAuthorized = false;
       }
     }
+    return allAuthorized;
   }
 
   public String generateToken(final TokenService tokenService) {

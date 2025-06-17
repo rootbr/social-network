@@ -17,22 +17,15 @@ public class FriendSetHandler implements RestHandler {
       final Principal principal, final SocialNetworkApplication application,
       final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
       throws IOException {
-    final String path = exchange.getRequestURI().getPath();
-    final String friendUserId = extractPathVariable(path, "/friend/set/");
-
+    final String friendUserId = pathVariables[0];
     if (friendUserId == null) {
       exchange.sendResponseHeaders(400, -1);
       return;
     }
-
-    principal.execute(application.addFriendCommand(friendUserId));
-    exchange.sendResponseHeaders(200, -1);
-  }
-
-  private String extractPathVariable(final String path, final String prefix) {
-    if (path.startsWith(prefix)) {
-      return path.substring(prefix.length());
+    if (principal.execute(application.addFriendCommand(friendUserId))) {
+      exchange.sendResponseHeaders(200, -1);
+    } else {
+      exchange.sendResponseHeaders(401, -1);
     }
-    return null;
   }
 }
