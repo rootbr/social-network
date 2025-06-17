@@ -8,6 +8,8 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ApplicationJsonRestHandler implements RestHandler {
 
@@ -27,12 +29,12 @@ public class ApplicationJsonRestHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory jsonFactory,
-      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     final List<String> headersAccept = exchange.getRequestHeaders().get(HEADER_ACCEPT);
     final boolean notAcceptable = headersAccept == null || headersAccept.isEmpty() || !headersAccept.getFirst().contains(CONTENT_TYPE_APPLICATION_JSON);
     if (!notAcceptable) {
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
-      handler.handle(exchange, this.jsonFactory, principal, application, pathVariables);
+      handler.handle(exchange, this.jsonFactory, principal, application, pathVariables, queryParameters);
     } else {
       final InputStream i = exchange.getRequestBody();
       while (i.read(b) != -1) ;

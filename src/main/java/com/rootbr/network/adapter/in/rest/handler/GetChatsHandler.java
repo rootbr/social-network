@@ -7,11 +7,14 @@ import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class GetChatsHandler implements RestHandler {
 
   @Override
-  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
+  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     exchange.sendResponseHeaders(200, 0);
     try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
       generator.writeStartArray();

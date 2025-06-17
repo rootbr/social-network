@@ -8,6 +8,9 @@ import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class AuthenticationRestHandler implements RestHandler {
 
@@ -24,7 +27,7 @@ public class AuthenticationRestHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal p, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
+      final Principal p, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     final String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
     if (authHeader == null) {
       consumeInputAndReject(exchange);
@@ -41,7 +44,7 @@ public class AuthenticationRestHandler implements RestHandler {
       consumeInputAndReject(exchange);
       return;
     }
-    this.delegate.handle(exchange, factory, principal, this.application, pathVariables);
+    this.delegate.handle(exchange, factory, principal, this.application, pathVariables, queryParameters);
   }
 
 

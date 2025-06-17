@@ -9,6 +9,9 @@ import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import org.slf4j.Logger;
 
 public class ErrorInterceptor implements RestHandler {
@@ -22,9 +25,9 @@ public class ErrorInterceptor implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
+      final Principal principal, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     try {
-      delegate.handle(exchange, factory, principal, application, pathVariables);
+      delegate.handle(exchange, factory, principal, application, pathVariables, queryParameters);
     } catch (final Exception e) {
       log.error("Error handling request", e);
       exchange.sendResponseHeaders(500, 0);

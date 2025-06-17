@@ -9,10 +9,13 @@ import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class CreateChatHandler implements RestHandler {
   @Override
-  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables) throws IOException {
+  public void handle(final HttpExchange exchange, final JsonFactory factory, final Principal principal, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     final String chatId = exchange.getRequestURI().getPath().substring(11);
     principal.execute(application.createChatCommand(chatId, (id, title, lastMessage, date) -> {
       exchange.sendResponseHeaders(200, 0);

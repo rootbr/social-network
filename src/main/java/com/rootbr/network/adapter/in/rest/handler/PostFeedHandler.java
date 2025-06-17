@@ -13,19 +13,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class PostFeedHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application)
+      final Principal principal, final SocialNetworkApplication application,
+      final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
       throws IOException {
     final URI uri = exchange.getRequestURI();
     final Map<String, String> queryParams = parseQueryParameters(uri.getQuery());
-    
-    final int offset = queryParams.containsKey("offset") ? 
+
+    final int offset = queryParams.containsKey("offset") ?
         Integer.parseInt(queryParams.get("offset")) : 0;
-    final int limit = queryParams.containsKey("limit") ? 
+    final int limit = queryParams.containsKey("limit") ?
         Integer.parseInt(queryParams.get("limit")) : 10;
 
     final List<Map<String, Object>> posts = new ArrayList<>();

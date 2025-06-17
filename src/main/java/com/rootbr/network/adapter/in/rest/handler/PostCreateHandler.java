@@ -9,13 +9,17 @@ import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 
 public class PostCreateHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application)
+      final Principal principal, final SocialNetworkApplication application,
+      final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters)
       throws IOException {
     String text = null;
     try (final JsonParser parser = factory.createParser(exchange.getRequestBody())) {

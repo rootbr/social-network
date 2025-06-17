@@ -8,12 +8,16 @@ import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ContractVariablesHandler implements RestHandler {
 
   @Override
   public void handle(final HttpExchange exchange, final JsonFactory factory,
-      final Principal principal, final SocialNetworkApplication application) throws IOException {
+      final Principal principal, final SocialNetworkApplication application,
+      final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     final String chatId = exchange.getRequestURI().getPath().substring(11, 47);
 
     // Потребляем тело запроса (если есть)
