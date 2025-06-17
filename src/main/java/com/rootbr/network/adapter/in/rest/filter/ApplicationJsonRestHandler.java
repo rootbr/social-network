@@ -36,9 +36,6 @@ public class ApplicationJsonRestHandler implements RestHandler {
       exchange.getResponseHeaders().set(HEADER_CONTENT_TYPE, CONTENT_TYPE_APPLICATION_JSON);
       handler.handle(exchange, this.jsonFactory, principal, application, pathVariables, queryParameters);
     } else {
-      final InputStream i = exchange.getRequestBody();
-      while (i.read(b) != -1) ;
-      i.close();
       exchange.sendResponseHeaders(406, -1);
     }
   }

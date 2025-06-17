@@ -5,7 +5,7 @@ import static com.rootbr.network.adapter.in.rest.server.HttpMethod.POST;
 import static com.rootbr.network.adapter.in.rest.server.HttpMethod.PUT;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.rootbr.network.adapter.in.rest.filter.AnanimousRestHandler;
+import com.rootbr.network.adapter.in.rest.filter.AnonymousRestHandler;
 import com.rootbr.network.adapter.in.rest.filter.ApplicationJsonRestHandler;
 import com.rootbr.network.adapter.in.rest.filter.AuthenticationRestHandler;
 import com.rootbr.network.adapter.in.rest.filter.ErrorInterceptor;
@@ -53,7 +53,7 @@ public class RestService {
         .registerHttpHandler(
             POST, "/login",
             new ErrorInterceptor(
-                new AnanimousRestHandler(
+                new AnonymousRestHandler(
                     tokenService,
                     application,
                     new ApplicationJsonRestHandler(
@@ -66,7 +66,7 @@ public class RestService {
         .registerHttpHandler(
             POST, "/user/register",
             new ErrorInterceptor(
-                new AnanimousRestHandler(
+                new AnonymousRestHandler(
                     tokenService,
                     application,
                     new ApplicationJsonRestHandler(
@@ -79,7 +79,7 @@ public class RestService {
         .registerHttpHandler(
             GET, "/user/get/{id}",
             new ErrorInterceptor(
-                new AnanimousRestHandler(
+                new AnonymousRestHandler(
                     tokenService,
                     application,
                     new ApplicationJsonRestHandler(
@@ -92,7 +92,7 @@ public class RestService {
         .registerHttpHandler(
             GET, "/user/search",
             new ErrorInterceptor(
-                new AnanimousRestHandler(
+                new AnonymousRestHandler(
                     tokenService,
                     application,
                     new ApplicationJsonRestHandler(
@@ -170,7 +170,7 @@ public class RestService {
         .registerHttpHandler(
             GET, "/post/get/{id}",
             new ErrorInterceptor(
-                new AnanimousRestHandler(
+                new AnonymousRestHandler(
                     tokenService,
                     application,
                     new ApplicationJsonRestHandler(

@@ -9,6 +9,7 @@ import com.rootbr.network.application.Principal;
 import com.rootbr.network.application.SocialNetworkApplication;
 import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 public class ErrorInterceptor implements RestHandler {
 
   private static final Logger log = getLogger(ErrorInterceptor.class);
+  private final byte[] b = new byte[4096];
   private final RestHandler delegate;
 
   public ErrorInterceptor(final RestHandler delegate) {
@@ -36,6 +38,10 @@ public class ErrorInterceptor implements RestHandler {
         generator.writeStringField("error", e.getMessage());
         generator.writeEndObject();
       }
+    } finally {
+        final InputStream i = exchange.getRequestBody();
+        while (i.read(b) != -1) ;
+        exchange.close();
     }
   }
 }

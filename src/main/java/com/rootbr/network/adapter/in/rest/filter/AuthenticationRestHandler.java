@@ -30,30 +30,20 @@ public class AuthenticationRestHandler implements RestHandler {
       final Principal p, final SocialNetworkApplication application, final String[] pathVariables, final Function<HttpExchange, Map<String, List<String>>> queryParameters) throws IOException {
     final String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
     if (authHeader == null) {
-      consumeInputAndReject(exchange);
+      exchange.sendResponseHeaders(401, -1);
       return;
     }
     final int sp = authHeader.indexOf(' ');
     if (sp == -1 || !authHeader.substring(0, sp).equals("Bearer")) {
-      consumeInputAndReject(exchange);
+      exchange.sendResponseHeaders(401, -1);
       return;
     }
     final String token = authHeader.substring(sp + 1);
     final Principal principal = this.tokenService.createPrincipal(token, this.application::principal);
     if (principal == null) {
-      consumeInputAndReject(exchange);
+      exchange.sendResponseHeaders(401, -1);
       return;
     }
     this.delegate.handle(exchange, factory, principal, this.application, pathVariables, queryParameters);
-  }
-
-
-  private final byte[] b = new byte[4096];
-
-  private void consumeInputAndReject(final HttpExchange exchange) throws IOException {
-    final InputStream i = exchange.getRequestBody();
-    while (i.read(b) != -1) ;
-    i.close();
-    exchange.sendResponseHeaders(401, -1);
   }
 }
