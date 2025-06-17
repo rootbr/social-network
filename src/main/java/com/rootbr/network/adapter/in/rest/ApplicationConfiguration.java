@@ -63,31 +63,4 @@ public class ApplicationConfiguration {
   public Properties properties(final String key) {
     return ConfigurationConverter.getProperties(configuration.subset(key));
   }
-
-  public LinkedHashMap<String, Question> parseQuestions() {
-    final LinkedHashMap<String, Question> questions = new LinkedHashMap<>();
-    final Configuration questionsConfig = configuration.subset("questions");
-    final Iterator<String> keys = questionsConfig.getKeys();
-    final Map<String, Boolean> questionIds = new LinkedHashMap<>();
-    while (keys.hasNext()) {
-      final String key = keys.next();
-      final String questionId = key.split("\\.")[0];
-      questionIds.put(questionId, true);
-    }
-    for (final String questionId : questionIds.keySet()) {
-      final String text = questionsConfig.getString(questionId + ".text");
-      final String aiText = questionsConfig.getString(questionId + ".aiText");
-      final String title = questionsConfig.getString(questionId + ".title");
-      final String description = questionsConfig.getString(questionId + ".description");
-      final String next = questionsConfig.getString(questionId + ".next");
-      final String tool = questionsConfig.getString(questionId + ".tool");
-      final String skipTo = questionsConfig.getString(questionId + ".skipTo");
-      final String valueType = questionsConfig.getString(questionId + ".valueType");
-      final Question question = new Question(questionId, text, aiText, title, description, next, tool, skipTo, valueType);
-      questions.put(questionId, question);
-    }
-    return questions;
-  }
-
-  public record Question(String key, String text, String aiText, String title, String description, String next, String tool, String skipTo, String valueType){}
 }

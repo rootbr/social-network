@@ -12,7 +12,7 @@ public class UserPortImpl implements UserPort {
   private static final String sqlCreate = "INSERT INTO users (id, first_name, last_name, birth_date, biography, city) VALUES (?, ?, ?, ?, ?, ?)";
 
   @Override
-  public void create(final Connection connection, final String id, final String firstName, final String secondName, 
+  public void create(final Connection connection, final String id, final String firstName, final String secondName,
                     final String birthdate, final String biography, final String city) throws SQLException {
     try (final PreparedStatement ps = connection.prepareStatement(sqlCreate)) {
       ps.setString(1, id);
@@ -31,12 +31,12 @@ public class UserPortImpl implements UserPort {
   private static final String sqlGetUserById = "SELECT id, first_name, last_name, birth_date, biography, city FROM users WHERE id = ?";
 
   @Override
-  public void readUserData(final Connection connection, final String id, final UsersVisitor usersVisitor) throws SQLException {
+  public void readUserData(final Connection connection, final String id, final UsersVisitor usersVisitor) throws Exception {
     try (final PreparedStatement ps = connection.prepareStatement(sqlGetUserById)) {
       ps.setString(1, id);
       try (final ResultSet rs = ps.executeQuery()) {
         if (rs.next()) {
-          usersVisitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3), 
+          usersVisitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3),
                                rs.getString(4), rs.getString(5), rs.getString(6));
         }
       }
@@ -44,20 +44,20 @@ public class UserPortImpl implements UserPort {
   }
 
   @Override
-  public void getUserById(final Connection connection, final String userId, final UsersVisitor visitor) throws SQLException {
+  public void getUserById(final Connection connection, final String userId, final UsersVisitor visitor) throws Exception {
     readUserData(connection, userId, visitor);
   }
 
   private static final String sqlSearchUsers = "SELECT id, first_name, last_name, birth_date, biography, city FROM users WHERE first_name LIKE ? AND last_name LIKE ?";
 
   @Override
-  public void searchUsers(final Connection connection, final String firstName, final String lastName, final UsersVisitor visitor) throws SQLException {
+  public void searchUsers(final Connection connection, final String firstName, final String lastName, final UsersVisitor visitor) throws Exception {
     try (final PreparedStatement ps = connection.prepareStatement(sqlSearchUsers)) {
       ps.setString(1, firstName + "%");
       ps.setString(2, lastName + "%");
       try (final ResultSet rs = ps.executeQuery()) {
         while (rs.next()) {
-          visitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3), 
+          visitor.visitUser(rs.getString(1), rs.getString(2), rs.getString(3),
                           rs.getString(4), rs.getString(5), rs.getString(6));
         }
       }

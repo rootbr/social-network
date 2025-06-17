@@ -24,8 +24,6 @@ import com.rootbr.network.adapter.in.rest.handler.UserRegisterHandler;
 import com.rootbr.network.adapter.in.rest.handler.UserSearchHandler;
 import com.rootbr.network.adapter.in.rest.server.JwtService;
 import com.rootbr.network.adapter.in.rest.server.Server;
-import com.rootbr.network.adapter.out.db.ChatPortImpl;
-import com.rootbr.network.adapter.out.db.MessagePortImpl;
 import com.rootbr.network.adapter.out.db.PrincipalPortImpl;
 import com.rootbr.network.adapter.out.db.UserPortImpl;
 import com.rootbr.network.application.SocialNetworkApplication;
@@ -49,8 +47,6 @@ public class RestService {
         ),
         new BCryptPasswordEncoder(config.properties("auth")),
         new UserPortImpl(),
-        new ChatPortImpl(),
-        new MessagePortImpl(),
         new PrincipalPortImpl()
     );
     new Server(config.properties("server"), executor)
