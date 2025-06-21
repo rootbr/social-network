@@ -110,7 +110,13 @@
       "Bash(python3:*)",
       "Bash(pkill:*)",
       "Bash(gsettings set:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(brew install:*)",
+      "Bash(export:*)",
+      "Bash(PGPASSWORD:*)",
+      "Bash(bash --version)",
+      "Bash(zsh:*)",
+      "Bash(timeout:*)",
     ],
     "deny": [
       "Bash(curl * | sh)",
