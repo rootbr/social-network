@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Commit and Versioning Standards
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) and [Semantic Versioning 2.0.0](https://semver.org/) specifications.
+
+**See [COMMIT_AND_VERSION_GUIDE.md](COMMIT_AND_VERSION_GUIDE.md) for complete rules and examples.**
+
+**Quick Reference:**
+- Commit format: `<type>[scope]: <description>`
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
+- Breaking changes: Add `!` after type or use `BREAKING CHANGE:` footer
+- Versioning: MAJOR.MINOR.PATCH (breaking.feature.bugfix)
+
 ## Build and Development Commands
 
 **Build and Package:**

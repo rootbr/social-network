@@ -1,7 +1,7 @@
 dataSource:
-  jdbcUrl: jdbc:postgresql://localhost:5432/postgres
-  username: postgres
-  password: postgres
+  jdbcUrl: jdbc:postgresql://localhost:5432/social_network
+  username: social_network
+  password: social_network
   minimumIdle: 1
 
 server:
