@@ -1,7 +1,6 @@
 package com.rootbr.network.adapter.in.rest.server;
 
 import com.rootbr.network.adapter.in.rest.filter.CorsFilter;
-import com.rootbr.network.adapter.in.rest.filter.StaticFileFilter;
 import com.rootbr.network.adapter.in.rest.handler.RouterHttpHandler;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
@@ -22,11 +21,7 @@ public class Server {
         Integer.parseInt(properties.getProperty("backlog"))
     );
     this.server.setExecutor(executor);
-    final HttpContext context = server.createContext("/", new StaticFileFilter());
-    if (System.getProperty("debug") != null) {
-      context.getFilters().add(new CorsFilter());
-    }
-    final HttpContext apiContext = server.createContext("/api", router);
+    final HttpContext apiContext = server.createContext("/", router);
     if (System.getProperty("debug") != null) {
       apiContext.getFilters().add(new CorsFilter());
     }

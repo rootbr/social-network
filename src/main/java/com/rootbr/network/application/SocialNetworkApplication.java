@@ -71,6 +71,12 @@ public class SocialNetworkApplication {
 
   public Command searchUsersCommand(final String firstName, final String lastName, final UsersVisitor visitor) {
     return new ReadCommand() {
+
+      @Override
+      public boolean authorize(final String id, final String login) {
+        return true;
+      }
+
       @Override
       protected void doCommand(final Connection connection) throws Exception {
         userPort.searchUsers(connection, firstName, lastName, visitor);
