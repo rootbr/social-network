@@ -58,13 +58,15 @@ public class UserRegisterHandler implements RestHandler {
     }
 
     final String userId = UUID.randomUUID().toString();
-    principal.execute(application.registerUserCommand(userId, firstName, secondName, birthdate, biography, city, password));
-
-    exchange.sendResponseHeaders(200, 0);
-    try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
-      generator.writeStartObject();
-      generator.writeStringField("user_id", userId);
-      generator.writeEndObject();
+    if (principal.execute(application.registerUserCommand(userId, firstName, secondName, birthdate, biography, city, password))) {
+      exchange.sendResponseHeaders(200, 0);
+      try (final JsonGenerator generator = factory.createGenerator(exchange.getResponseBody())) {
+        generator.writeStartObject();
+        generator.writeStringField("user_id", userId);
+        generator.writeEndObject();
+      }
+    } else {
+      exchange.sendResponseHeaders(401, -1);
     }
   }
 }
