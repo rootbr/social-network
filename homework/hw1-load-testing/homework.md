@@ -77,6 +77,46 @@ mvn liquibase:update
 python3 import_test_data.py
 ```
 
+### Тестирование endpoint'а поиска пользователей
+
+**Запуск приложения:**
+```bash
+# Собрать и запустить приложение
+mvn clean package
+java -jar target/social-network-1.0.0.jar
+
+# Или через Docker
+docker-compose up
+```
+
+**Тестовые запросы curl:**
+```bash
+curl -G -X GET "http://localhost:8080/user/search" -H "Accept: application/json" \
+  --data-urlencode "first_name=А" \
+  --data-urlencode "last_name=А"
+```
+
+**Ожидаемый формат ответа:**
+```json
+[
+  {
+    "id": "uuid-here",
+    "first_name": "Александр",
+    "second_name": "Абрамов",
+    "birthdate": "1990-01-01", 
+    "biography": "Увлекаюсь программированием",
+    "city": "Москва"
+  }
+]
+```
+
+**Примечания:**
+- Endpoint: `GET /user/search`
+- Параметры: `first_name` и `last_name` (оба обязательные)
+- Поиск: по префиксу (LIKE 'value%')
+- Авторизация: не требуется
+- Сортировка: результаты сортируются по ID пользователя
+
 ### Описание файлов
 - `people.v2.csv` - CSV файл с тестовыми данными (~1М записей, UTF-8)
   - Формат: `Фамилия Имя,YYYY-MM-DD,Город`
