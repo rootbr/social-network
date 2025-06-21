@@ -37,28 +37,28 @@ run_test() {
     # Enable only the specified thread group and disable others
     case $thread_group in
         "1")
-            sed -i 's/testname="1 User Load Test" enabled="false"/testname="1 User Load Test" enabled="true"/g' "$temp_jmx"
-            sed -i 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1 User Load Test" enabled="false"/testname="1 User Load Test" enabled="true"/g' "$temp_jmx"
+            sed -i '' 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
             ;;
         "10")
-            sed -i 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="10 Users Load Test" enabled="false"/testname="10 Users Load Test" enabled="true"/g' "$temp_jmx"
-            sed -i 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="10 Users Load Test" enabled="false"/testname="10 Users Load Test" enabled="true"/g' "$temp_jmx"
+            sed -i '' 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
             ;;
         "100")
-            sed -i 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="100 Users Load Test" enabled="false"/testname="100 Users Load Test" enabled="true"/g' "$temp_jmx"
-            sed -i 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="100 Users Load Test" enabled="false"/testname="100 Users Load Test" enabled="true"/g' "$temp_jmx"
+            sed -i '' 's/testname="1000 Users Load Test" enabled="true"/testname="1000 Users Load Test" enabled="false"/g' "$temp_jmx"
             ;;
         "1000")
-            sed -i 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
-            sed -i 's/testname="1000 Users Load Test" enabled="false"/testname="1000 Users Load Test" enabled="true"/g' "$temp_jmx"
+            sed -i '' 's/testname="1 User Load Test" enabled="true"/testname="1 User Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="10 Users Load Test" enabled="true"/testname="10 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="100 Users Load Test" enabled="true"/testname="100 Users Load Test" enabled="false"/g' "$temp_jmx"
+            sed -i '' 's/testname="1000 Users Load Test" enabled="false"/testname="1000 Users Load Test" enabled="true"/g' "$temp_jmx"
             ;;
     esac
     
