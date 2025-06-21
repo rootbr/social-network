@@ -108,7 +108,9 @@
       "Bash(mkdir:*)",
       "Bash(chmod:*)",
       "Bash(python3:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(gsettings set:*)",
+      "Bash(mv:*)"
     ],
     "deny": [
       "Bash(curl * | sh)",

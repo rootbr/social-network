@@ -13,6 +13,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) an
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
 - Breaking changes: Add `!` after type or use `BREAKING CHANGE:` footer
 - Versioning: MAJOR.MINOR.PATCH (breaking.feature.bugfix)
+- for large changes, split into several atomic commits
 
 ## Build and Development Commands
 
