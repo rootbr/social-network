@@ -2,86 +2,42 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commit and Versioning Standards
-
-Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) and [Semantic Versioning 2.0.0](https://semver.org/) specifications.
-
-**See [COMMIT_AND_VERSION_GUIDE.md](COMMIT_AND_VERSION_GUIDE.md) for complete rules and examples.**
-
-**Quick Reference:**
-- Commit format: `<type>[scope]: <description>`
-- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
-- Breaking changes: Add `!` after type or use `BREAKING CHANGE:` footer
-- Versioning: MAJOR.MINOR.PATCH (breaking.feature.bugfix)
-- for large changes, split into several atomic commits
 
 ## Build and Development Commands
 
-**Build and Package:**
 ```bash
 mvn clean package
-```
-
-**Database Operations:**
-```bash
 # Run database migrations
 mvn liquibase:update
-
+# Run application via jlink
+jdeps --multi-release 21 --ignore-missing-deps --print-module-deps ./social-network-1.0.0.jar > /tmp/modules.txt && \
+    jlink --compress=2 --strip-debug --no-header-files --no-man-pages \
+          --add-modules $(cat /tmp/modules.txt) \
+          --output jlink-runtime
+./jlink-runtime/bin/java -jar social-network-1.0.0.jar
 # Rollback last migration
 mvn liquibase:rollback -Dliquibase.rollbackCount=1
-```
-
-**Running the Application:**
-```bash
-# Local development
+# Running the Application: Local development
 java -jar target/social-network-1.0.0.jar
-
-# Docker (recommended)
+# Running the Application: Docker (recommended)
 docker-compose up
-
 # Application runs on http://localhost:8080
-```
-
-**Load Testing:**
-```bash
 # Run JMeter load tests
 jmeter -n -t load-test-plan.jmx -l results.jtl
 ```
 
 ## Architecture Overview
 
-This is a **hexagonal architecture** (clean architecture) Java application with custom HTTP server implementation:
+This is a **hexagonal architecture** (clean architecture) Java application with custom HTTP server implementation
 
-### Layer Structure
-- **Application Layer** (`com.rootbr.network.application`): Core business logic, commands, ports (interfaces)
-- **Inbound Adapters** (`com.rootbr.network.adapter.in.rest`): REST API handlers, filters, custom HTTP server
-- **Outbound Adapters** (`com.rootbr.network.adapter.out.db`): Database implementations using raw JDBC
+## Database Liquibase Schema
 
-### Key Architectural Patterns
-- **Command Pattern**: All business operations are implemented as commands in `application/command/`
-- **Visitor Pattern**: Data processing and transformation in `application/visitor/`
-- **Port-Adapter Pattern**: Interfaces in `application/port/`, implementations in `adapter/`
-
-### Technology Stack
-- **Java 21** with virtual threads for high concurrency
-- **Custom HTTP Server** using `com.sun.net.httpserver` (no Spring Framework)
-- **PostgreSQL** with raw JDBC and HikariCP connection pooling
-- **Liquibase** for database migrations
-- **JWT** for authentication (JJWT 0.12.6)
-- **BCrypt** for password hashing
-- **Jackson 2.19.0** for JSON processing
-- **Commons Configuration2** for flexible configuration management
-
-## Database Schema
-
-Core tables:
-- `users`: User profiles (first_name, last_name, birth_date, biography, city)
-- `principals`: Authentication data (id, encoded_password)
-- Additional tables for chats, messages, posts, and friendships
+@db/changelog/01-create-initial-schema.xml
+@db/changelog/db.changelog-master.xml
 
 ## API Structure
 
-All endpoints follow REST principles with JWT authentication where required. See `openapi.json` for complete API specification.
+All endpoints follow REST principles with JWT authentication where required. See @openapi.json for complete API specification.
 
 **Authentication Flow:**
 1. `POST /user/register` - Register new user
@@ -90,7 +46,7 @@ All endpoints follow REST principles with JWT authentication where required. See
 
 ## Configuration
 
-- Main config: `src/main/resources/config.yml`
+- Main config: @src/main/resources/config.yml
 - Environment variable overrides: Any config.yml property can be overridden using uppercase with underscores
   - Examples: `DATASOURCE_JDBCURL`, `SERVER_PORT`, `LOGGING_LEVEL_ROOT`
 - Key environment variables:
@@ -123,21 +79,10 @@ All endpoints follow REST principles with JWT authentication where required. See
 
 **Security:**
 - JWT tokens for authentication
-- BCrypt password hashing with cost factor 7
+- BCrypt password hashing
 - CORS enabled for cross-origin requests
 - Command-level authorization with boolean return flags
 
 **Logging:**
-- Dual configuration: `logback.xml` (production) and `logback-local.xml` (development)
-- Production: File logging with daily rotation, 100MB max files, 30-day retention
-- Development: Console logging only
-- Logs written to `logs/` directory (Docker volume mounted)
-
-## Testing Gap
-
-**Important:** This codebase currently has no automated tests. When adding features:
-1. Consider adding unit tests for command implementations
-2. Integration tests for database operations
-3. API endpoint tests using the custom HTTP server
-
-Test framework recommendations: JUnit 5
+- Dual configuration: @src/main/resources/logback.xml (production) and @logback-local.xml (development)
+- Production Logs written to `logs/` directory (Docker volume mounted)
